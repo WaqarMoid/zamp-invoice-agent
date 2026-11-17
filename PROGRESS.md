@@ -51,7 +51,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
   - `backend/.venv/Scripts/pytest` (17 passed in 1.09s, covering test_money, test_gstin, test_text, test_dates, test_health, test_procurement)
   - SQLite creation and seeding verified (6 vendors, 8 POs, 3 prior invoices)
-- Commit: pending commit
+- Commit: 96002f1
 - Notes for next phase: Proceed with Phase 2 Fixtures (PDF fixture generator in scripts/generate_fixtures.py, generating F01-F09 PDFs and golden JSONs).
 
 ## Handoff notes (for a fresh session with empty context)
