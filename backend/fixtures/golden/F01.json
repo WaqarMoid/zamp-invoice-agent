@@ -1,0 +1,68 @@
+{
+  "vendor_name": "Sharma Packaging Solutions Pvt. Ltd.",
+  "vendor_gstin": "29AAGCS7712R1ZI",
+  "vendor_address": "No. 221, 4th Phase, Peenya Industrial Area, Bengaluru, Karnataka 560058",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "SPS/26-27/0512",
+  "invoice_date": "2026-11-12",
+  "invoice_date_raw": "12/11/2026",
+  "currency": "INR",
+  "po_number": "PO-2026-0412",
+  "po_reference_text": null,
+  "amounts_include_tax": false,
+  "line_items": [
+    {
+      "description": "Corrugated Box 5 Ply (18x12x12 inch)",
+      "hsn_sac": "4819",
+      "quantity": "2000",
+      "uom": "NOS",
+      "unit_price": "42.50",
+      "tax_rate_percent": "18",
+      "line_amount": "85000.00"
+    },
+    {
+      "description": "LDPE Food Grade Liner 20 mic",
+      "hsn_sac": "3923",
+      "quantity": "2000",
+      "uom": "NOS",
+      "unit_price": "6.75",
+      "tax_rate_percent": "18",
+      "line_amount": "13500.00"
+    },
+    {
+      "description": "BOPP Tape 48mm x 65m",
+      "hsn_sac": "3919",
+      "quantity": "300",
+      "uom": "ROLL",
+      "unit_price": "38.00",
+      "tax_rate_percent": "18",
+      "line_amount": "11400.00"
+    }
+  ],
+  "subtotal": "109900.00",
+  "tax": {
+    "cgst": "9891.00",
+    "sgst": "9891.00",
+    "igst": "0.00"
+  },
+  "total_tax": "19782.00",
+  "grand_total": "129682.00",
+  "bank_details": {
+    "bank_name": "HDFC Bank",
+    "ifsc": "HDFC0001234",
+    "account_number": "50200017745321",
+    "account_name": "Sharma Packaging Solutions Pvt. Ltd."
+  },
+  "notes": null,
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

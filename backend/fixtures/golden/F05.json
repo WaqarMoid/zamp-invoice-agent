@@ -1,0 +1,50 @@
+{
+  "vendor_name": "Annapurna Dairy Ingredients Pvt. Ltd.",
+  "vendor_gstin": "29AAFCA6023H1ZS",
+  "vendor_address": "Survey No. 88, Doddaballapur Road, Bengaluru Rural, Karnataka 561203",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "ADI/2026/1183",
+  "invoice_date": "2026-11-14",
+  "invoice_date_raw": "14/11/2026",
+  "currency": "INR",
+  "po_number": "PO-2026-0440",
+  "po_reference_text": null,
+  "amounts_include_tax": false,
+  "line_items": [
+    {
+      "description": "Skimmed Milk Powder - 25 kg bag",
+      "hsn_sac": "0402",
+      "quantity": "60",
+      "uom": "BAG",
+      "unit_price": "6200.00",
+      "tax_rate_percent": "5",
+      "line_amount": "372000.00"
+    }
+  ],
+  "subtotal": "372000.00",
+  "tax": {
+    "cgst": "9300.00",
+    "sgst": "9300.00",
+    "igst": "0.00"
+  },
+  "total_tax": "18600.00",
+  "grand_total": "390600.00",
+  "bank_details": {
+    "bank_name": "ICICI Bank",
+    "ifsc": "ICIC0007314",
+    "account_number": "731405002288",
+    "account_name": "Annapurna Dairy Ingredients"
+  },
+  "notes": "IMPORTANT: Please note our NEW bank account details w.e.f. 01-Nov-2026. Kindly update your records and remit to the account below.",
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

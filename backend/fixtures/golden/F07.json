@@ -1,0 +1,50 @@
+{
+  "vendor_name": "GreenLeaf Agro Supplies",
+  "vendor_gstin": "29BQZPR4417L1ZR",
+  "vendor_address": "APMC Yard, Yeshwanthpur, Bengaluru, Karnataka 560022",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "GLA-1139",
+  "invoice_date": "2026-11-08",
+  "invoice_date_raw": "08-Nov-26",
+  "currency": "INR",
+  "po_number": "PO-2026-0427",
+  "po_reference_text": null,
+  "amounts_include_tax": true,
+  "line_items": [
+    {
+      "description": "Green Cardamom 8mm Bold (incl. GST 5%)",
+      "hsn_sac": "0908",
+      "quantity": "15",
+      "uom": "KG",
+      "unit_price": "3045.00",
+      "tax_rate_percent": "5",
+      "line_amount": "45675.00"
+    }
+  ],
+  "subtotal": "45675.00",
+  "tax": {
+    "cgst": "1087.50",
+    "sgst": "1087.50",
+    "igst": "0.00"
+  },
+  "total_tax": "2175.00",
+  "grand_total": "45675.00",
+  "bank_details": {
+    "bank_name": "State Bank of India",
+    "ifsc": "SBIN0040021",
+    "account_number": "38211456702",
+    "account_name": "Ravi Rao trading as GreenLeaf Agro Supplies"
+  },
+  "notes": "All prices are inclusive of GST.",
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

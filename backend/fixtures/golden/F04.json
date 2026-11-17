@@ -1,0 +1,59 @@
+{
+  "vendor_name": "Bluepeak IT Services Pvt. Ltd.",
+  "vendor_gstin": "27AADCB8810Q1Z7",
+  "vendor_address": "Office 504, Teerth Technospace, Baner, Pune, Maharashtra 411045",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "BIS/INV/26/89",
+  "invoice_date": "2026-11-03",
+  "invoice_date_raw": "03 Nov 2026",
+  "currency": "INR",
+  "po_number": "PO-2026-0398",
+  "po_reference_text": null,
+  "amounts_include_tax": false,
+  "line_items": [
+    {
+      "description": "Endpoint Security Licence - Annual (per device)",
+      "hsn_sac": "997331",
+      "quantity": "120",
+      "uom": "NOS",
+      "unit_price": "1450.00",
+      "tax_rate_percent": "18",
+      "line_amount": "174000.00"
+    },
+    {
+      "description": "Implementation & Onboarding",
+      "hsn_sac": "998313",
+      "quantity": "1",
+      "uom": "LS",
+      "unit_price": "25000.00",
+      "tax_rate_percent": "18",
+      "line_amount": "25000.00"
+    }
+  ],
+  "subtotal": "199000.00",
+  "tax": {
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "35820.00"
+  },
+  "total_tax": "35820.00",
+  "grand_total": "234820.00",
+  "bank_details": {
+    "bank_name": "Axis Bank",
+    "ifsc": "UTIB0000789",
+    "account_number": "917020045563210",
+    "account_name": "Bluepeak IT Services Pvt. Ltd."
+  },
+  "notes": "Gentle reminder: payment pending for this invoice.",
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

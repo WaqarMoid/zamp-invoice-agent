@@ -1,0 +1,50 @@
+{
+  "vendor_name": "Metro Office Essentials Pvt. Ltd.",
+  "vendor_gstin": "29AAHCM1190D1ZK",
+  "vendor_address": "12 Residency Road, Bengaluru, Karnataka 560025",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "MOE/1125/2026",
+  "invoice_date": "2026-11-11",
+  "invoice_date_raw": "11/11/2026",
+  "currency": "INR",
+  "po_number": "PO-2026-0377",
+  "po_reference_text": null,
+  "amounts_include_tax": false,
+  "line_items": [
+    {
+      "description": "A4 Copier Paper 75 GSM (ream)",
+      "hsn_sac": "4802",
+      "quantity": "100",
+      "uom": "REAM",
+      "unit_price": "245.00",
+      "tax_rate_percent": "12",
+      "line_amount": "24500.00"
+    }
+  ],
+  "subtotal": "24500.00",
+  "tax": {
+    "cgst": "1470.00",
+    "sgst": "1470.00",
+    "igst": "0.00"
+  },
+  "total_tax": "2940.00",
+  "grand_total": "27440.00",
+  "bank_details": {
+    "bank_name": "Kotak Mahindra Bank",
+    "ifsc": "KKBK0008021",
+    "account_number": "8021339845",
+    "account_name": "Metro Office Essentials Pvt. Ltd."
+  },
+  "notes": null,
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

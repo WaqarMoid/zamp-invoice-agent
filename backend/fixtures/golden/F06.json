@@ -1,0 +1,50 @@
+{
+  "vendor_name": "Deccan Cold Chain Logistics LLP",
+  "vendor_gstin": "36AAJFD3349K1Z6",
+  "vendor_address": "Plot 7, Shamshabad Logistics Park, Hyderabad, Telangana 501218",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "DCC/2627/0791",
+  "invoice_date": "2026-11-16",
+  "invoice_date_raw": "16 Nov 2026",
+  "currency": "INR",
+  "po_number": "PO-2026-0418",
+  "po_reference_text": null,
+  "amounts_include_tax": false,
+  "line_items": [
+    {
+      "description": "Reefer trip BLR-HYD 20ft (Nov-26)",
+      "hsn_sac": "996511",
+      "quantity": "10",
+      "uom": "TRIP",
+      "unit_price": "10000.00",
+      "tax_rate_percent": "18",
+      "line_amount": "100000.00"
+    }
+  ],
+  "subtotal": "100000.00",
+  "tax": {
+    "cgst": "0.00",
+    "sgst": "0.00",
+    "igst": "18000.00"
+  },
+  "total_tax": "18000.00",
+  "grand_total": "118000.00",
+  "bank_details": {
+    "bank_name": "ICICI Bank",
+    "ifsc": "ICIC0000456",
+    "account_number": "045605009912",
+    "account_name": "Deccan Cold Chain Logistics LLP"
+  },
+  "notes": null,
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

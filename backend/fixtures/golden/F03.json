@@ -1,0 +1,59 @@
+{
+  "vendor_name": "GreenLeaf Agro Supplies",
+  "vendor_gstin": "29BQZPR4417L1ZR",
+  "vendor_address": "APMC Yard, Yeshwanthpur, Bengaluru, Karnataka 560022",
+  "buyer_name": "Kestrel Foods Pvt. Ltd.",
+  "buyer_gstin": "29AAACK4521M1ZD",
+  "invoice_number": "GLA-1147",
+  "invoice_date": "2026-11-10",
+  "invoice_date_raw": "10-Nov-26",
+  "currency": "INR",
+  "po_number": null,
+  "po_reference_text": "As per your order dated 02-Nov-2026",
+  "amounts_include_tax": false,
+  "line_items": [
+    {
+      "description": "Organic Jaggery Powder (25 kg bag)",
+      "hsn_sac": "1701",
+      "quantity": "40",
+      "uom": "BAG",
+      "unit_price": "1850.00",
+      "tax_rate_percent": "5",
+      "line_amount": "74000.00"
+    },
+    {
+      "description": "Rock Salt Himalayan (25 kg bag)",
+      "hsn_sac": "2501",
+      "quantity": "20",
+      "uom": "BAG",
+      "unit_price": "640.00",
+      "tax_rate_percent": "0",
+      "line_amount": "12800.00"
+    }
+  ],
+  "subtotal": "86800.00",
+  "tax": {
+    "cgst": "1850.00",
+    "sgst": "1850.00",
+    "igst": "0.00"
+  },
+  "total_tax": "3700.00",
+  "grand_total": "90500.00",
+  "bank_details": {
+    "bank_name": "State Bank of India",
+    "ifsc": "SBIN0040021",
+    "account_number": "38211456702",
+    "account_name": "Ravi Rao trading as GreenLeaf Agro Supplies"
+  },
+  "notes": null,
+  "field_confidence": {
+    "vendor_name": 0.99,
+    "vendor_gstin": 0.99,
+    "invoice_number": 0.99,
+    "invoice_date": 0.99,
+    "grand_total": 0.99,
+    "po_number": 0.99,
+    "line_items": 0.99
+  },
+  "warnings": []
+}

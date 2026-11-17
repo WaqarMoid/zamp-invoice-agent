@@ -3,15 +3,15 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P2 Fixtures (not started)
-- **Next action:** Read docs/05 §5.3-5.6 and build backend/scripts/generate_fixtures.py to generate 9 invoice PDFs + golden JSONs.
+- **Current phase:** P3 Extraction (not started)
+- **Next action:** Read docs/06, configure Gemini LLM extraction client, prompt, fallback heuristic, extraction cache, and evaluate accuracy with eval_extraction.py.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** _tbd (set in P3)_
 
 ## Phase checklist
 - [x] P0 Bootstrap
 - [x] P1 Data layer
-- [ ] P2 Fixtures
+- [x] P2 Fixtures
 - [ ] P3 Extraction
 - [ ] P4 Pipeline & rules
 - [ ] P5 API & streaming
@@ -52,24 +52,37 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `backend/.venv/Scripts/pytest` (17 passed in 1.09s, covering test_money, test_gstin, test_text, test_dates, test_health, test_procurement)
   - SQLite creation and seeding verified (6 vendors, 8 POs, 3 prior invoices)
 - Commit: 96002f1
-- Notes for next phase: Proceed with Phase 2 Fixtures (PDF fixture generator in scripts/generate_fixtures.py, generating F01-F09 PDFs and golden JSONs).
+- Notes for next phase: Proceed with Phase 2 Fixtures.
+
+### P2 Fixtures — done
+- Built:
+  - Fixture generator: `backend/scripts/generate_fixtures.py` supporting deterministic ReportLab generation across classic, modern, and compact layouts, Indian numbering formats, amount in words, bank details, and footer notes.
+  - Scanned simulation for F03: 200 DPI rasterization, +0.6° rotation, Gaussian noise (σ=6), paper tint, Gaussian blur (0.4), and zero-text PDF rebuild.
+  - Golden extraction JSONs: generated for all 9 fixtures (`backend/fixtures/golden/F0X.json`), validating 100% against `ExtractedInvoice` schema.
+  - Visual inspection of PNG previews:
+    - **F01 (Classic)**: Boxed header, clear vendor block and invoice metadata, full grid table with right-aligned rupee amounts, right-aligned totals block, amount in words, bank details box, and signature block. Everything fits single A4 page cleanly with zero overlap.
+    - **F03 (Compact / Scanned)**: Realistic scanned document texture with subtle rotation (+0.6°), natural grain, paper tint, Order Ref printed in place of PO No., compact dense line item table, and split CGST/SGST without rate. Text layer verified to have exactly 0 characters.
+    - **F05 (Classic / Bank Change Alert)**: Distinct highlighted red-bordered box (`#E53E3E`) with bold warning regarding new remittance bank account details. Table and totals aligned cleanly.
+    - **F07 (Compact / Tax-Inclusive)**: Line item marked "(incl. GST 5%)", subtotal ₹45,675.00, detailed italic breakdown line ("Includes CGST 2.5% Rs. 1,087.50 and SGST 2.5% Rs. 1,087.50"), Grand Total ₹45,675.00, and explicit tax-inclusive footer note.
+- Verified:
+  - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
+  - `backend/.venv/Scripts/pytest` (21 passed in 1.93s, including `test_fixtures.py`)
+  - All 9 PDFs exist in `backend/fixtures/` and 9 golden JSONs exist in `backend/fixtures/golden/`
+- Commit: pending commit
+- Notes for next phase: Proceed with Phase 3 Extraction.
+
+## Handoff notes (for a fresh session with empty context)
+- P0, P1, and P2 are complete and all 21 pytest tests pass.
+- Generated PDFs and golden files live in `backend/fixtures/` and `backend/fixtures/golden/`.
+- Visual inspection verified for F01, F03, F05, F07.
+- Ready to start Phase 3 Extraction (doc 06).
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 and P1 are complete and all tests pass (17/17 pytest).
 - DB models in `backend/app/models.py`, seed script in `backend/app/seed.py`.
 - Rules utilities in `backend/app/rules/` (money, gstin, text, dates, consumption).
 - Procurement endpoints active in `backend/app/api/procurement.py`.
-- Ready to start Phase 2 Fixtures.
-
-## Handoff notes (for a fresh session with empty context)
-- P0 Bootstrap is complete.
-- Backend virtual environment is at `backend/.venv`.
-- Frontend dependencies installed in `frontend/node_modules`.
-- Health check verified at `/api/health`.
-- Ready to start Phase 1 Data layer.
-
-## Handoff notes (for a fresh session with empty context)
-<!-- Keep to ~15 lines: where things are, what is half-done, gotchas discovered. -->
+- Generating F01..F09 invoice PDFs and golden JSONs.
 
 ## Deviations log
 <!-- Any place the implementation differs from docs/, with reason. Spec gaps you resolved and how. -->
