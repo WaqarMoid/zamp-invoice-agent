@@ -3,10 +3,10 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P3 Extraction (not started)
-- **Next action:** Read docs/06, configure Gemini LLM extraction client, prompt, fallback heuristic, extraction cache, and evaluate accuracy with eval_extraction.py.
+- **Current phase:** P3 Extraction (blocked on GEMINI_API_KEY)
+- **Next action:** Run `eval_extraction.py` once GEMINI_API_KEY is configured in `backend/.env`.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
-- **LLM model in use:** _tbd (set in P3)_
+- **LLM model in use:** gemini-2.5-flash
 
 ## Phase checklist
 - [x] P0 Bootstrap
@@ -71,11 +71,33 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - Commit: 1a69890
 - Notes for next phase: Proceed with Phase 3 Extraction.
 
+### P3 Extraction — in progress (blocked on GEMINI_API_KEY)
+- Built:
+  - System prompt: `backend/app/extraction/prompt.py` (verbatim from doc 06 §6.3 with layout instructions).
+  - Text layer extraction: `backend/app/extraction/text_layer.py` (layout=True extraction via pdfplumber, page break markers, 30k char truncation, text layer detection).
+  - Vision rendering: `backend/app/extraction/render.py` (PyMuPDF 200 DPI rendering to PNG bytes, 2400px downscaling).
+  - Heuristic fallback: `backend/app/extraction/heuristic.py` (regex + table parser emitting confidence 0.60).
+  - LLM client: `backend/app/extraction/llm_client.py` (Protocol) and `backend/app/extraction/gemini.py` (GeminiExtractor using `google-genai` SDK with `MirrorInvoice` float-safe schema, temperature=0, structured JSON output, post-parse guards, and 3 retry attempts with exponential backoff).
+  - Cache layer: `backend/app/extraction/cache.py` (SHA-256 caching for `ExtractionCache`).
+  - Evaluation tool: `backend/scripts/eval_extraction.py` (evaluates critical fields across F01..F09 against golden JSONs and outputs markdown report).
+  - Unit tests: `backend/tests/test_extraction_utils.py` and `backend/tests/test_extraction_cache.py`.
+- Verified:
+  - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
+  - `backend/.venv/Scripts/pytest` (26 passed in 2.16s)
+- Notes for next phase: Awaiting GEMINI_API_KEY in `backend/.env` to run live evaluation against all 9 fixtures.
+
 ## Handoff notes (for a fresh session with empty context)
-- P0, P1, and P2 are complete and all 21 pytest tests pass.
-- Generated PDFs and golden files live in `backend/fixtures/` and `backend/fixtures/golden/`.
-- Visual inspection verified for F01, F03, F05, F07.
-- Ready to start Phase 3 Extraction (doc 06).
+- P0, P1, P2 are done and tested (26 passed tests).
+- Phase 3 extraction pipeline (Gemini client, prompt, text/vision renderers, heuristic fallback, cache layer, evaluation script) is implemented and unit tested.
+- P3 is waiting on GEMINI_API_KEY in `backend/.env` to run `eval_extraction.py` against live Gemini and produce `backend/reports/extraction_eval.md`.
+
+## Deviations log
+<!-- Any place the implementation differs from docs/, with reason. Spec gaps you resolved and how. -->
+
+## Waiting on Waqar (HUMAN steps)
+1. Add your Gemini API key to `backend/.env`:
+   `GEMINI_API_KEY=AIzaSy...` (get a key from https://aistudio.google.com/ if needed).
+2. Tell me in chat once added so I can execute `python backend/scripts/eval_extraction.py` live to verify 100% extraction accuracy on F01-F09 and proceed with Phase 4.
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 and P1 are complete and all tests pass (17/17 pytest).
