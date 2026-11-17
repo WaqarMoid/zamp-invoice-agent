@@ -38,7 +38,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `backend/.venv/Scripts/pytest backend/tests/test_health.py` (2 passed)
   - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
   - `npm --prefix frontend run build` (built cleanly in 5.07s)
-- Commit: pending initial commit
+- Commit: 84b44a7
 - Notes for next phase: Proceed with Phase 1 Data layer (SQLAlchemy models, SQLite DB, seed loading, utility rules: money, gstin, text, dates, and API endpoints for vendors and purchase orders).
 
 ## Handoff notes (for a fresh session with empty context)
