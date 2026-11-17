@@ -1,0 +1,93 @@
+[
+  {
+    "invoice_number": "DCC/2627/0611",
+    "vendor_id": "V002",
+    "po_number": "PO-2026-0418",
+    "invoice_date": "2026-09-30",
+    "status": "APPROVED",
+    "lines": [
+      {
+        "po_line_no": 1,
+        "description": "Reefer trip BLR-HYD 20ft (Sep-26)",
+        "hsn_sac": "996511",
+        "uom": "TRIP",
+        "quantity": "20",
+        "unit_price": "10000.00",
+        "tax_rate_percent": "18",
+        "line_amount": "200000.00"
+      }
+    ],
+    "computed_totals": {
+      "net": "200000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "36000.00",
+      "tax": "36000.00",
+      "grand_total": "236000.00"
+    }
+  },
+  {
+    "invoice_number": "DCC/2627/0702",
+    "vendor_id": "V002",
+    "po_number": "PO-2026-0418",
+    "invoice_date": "2026-10-31",
+    "status": "APPROVED",
+    "lines": [
+      {
+        "po_line_no": 1,
+        "description": "Reefer trip BLR-HYD 20ft (Oct-26)",
+        "hsn_sac": "996511",
+        "uom": "TRIP",
+        "quantity": "20",
+        "unit_price": "10000.00",
+        "tax_rate_percent": "18",
+        "line_amount": "200000.00"
+      }
+    ],
+    "computed_totals": {
+      "net": "200000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "36000.00",
+      "tax": "36000.00",
+      "grand_total": "236000.00"
+    }
+  },
+  {
+    "invoice_number": "BIS-INV-2026-0089",
+    "vendor_id": "V003",
+    "po_number": "PO-2026-0398",
+    "invoice_date": "2026-10-28",
+    "status": "APPROVED",
+    "lines": [
+      {
+        "po_line_no": 1,
+        "description": "Endpoint security licence, annual",
+        "hsn_sac": "997331",
+        "uom": "NOS",
+        "quantity": "120",
+        "unit_price": "1450.00",
+        "tax_rate_percent": "18",
+        "line_amount": "174000.00"
+      },
+      {
+        "po_line_no": 2,
+        "description": "Implementation and onboarding",
+        "hsn_sac": "998313",
+        "uom": "LS",
+        "quantity": "1",
+        "unit_price": "25000.00",
+        "tax_rate_percent": "18",
+        "line_amount": "25000.00"
+      }
+    ],
+    "computed_totals": {
+      "net": "199000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "35820.00",
+      "tax": "35820.00",
+      "grand_total": "234820.00"
+    }
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "vendor_id": "V001",
+    "legal_name": "Sharma Packaging Solutions Pvt. Ltd.",
+    "aliases": [
+      "Sharma Packaging",
+      "SPS"
+    ],
+    "pan": "AAGCS7712R",
+    "state_code": "29",
+    "address": "No. 221, 4th Phase, Peenya Industrial Area, Bengaluru, Karnataka 560058",
+    "status": "ACTIVE",
+    "bank_name": "HDFC Bank",
+    "bank_ifsc": "HDFC0001234",
+    "bank_account_number": "50200017745321",
+    "payment_terms_days": 30,
+    "contact_email": "accounts@sharmapackaging.example",
+    "gstin": "29AAGCS7712R1ZI",
+    "deactivated_on": null
+  },
+  {
+    "vendor_id": "V002",
+    "legal_name": "Deccan Cold Chain Logistics LLP",
+    "aliases": [
+      "Deccan Cold Chain",
+      "DCC Logistics"
+    ],
+    "pan": "AAJFD3349K",
+    "state_code": "36",
+    "address": "Plot 7, Shamshabad Logistics Park, Hyderabad, Telangana 501218",
+    "status": "ACTIVE",
+    "bank_name": "ICICI Bank",
+    "bank_ifsc": "ICIC0000456",
+    "bank_account_number": "045605009912",
+    "payment_terms_days": 15,
+    "contact_email": "billing@deccancoldchain.example",
+    "gstin": "36AAJFD3349K1Z6",
+    "deactivated_on": null
+  },
+  {
+    "vendor_id": "V003",
+    "legal_name": "Bluepeak IT Services Pvt. Ltd.",
+    "aliases": [
+      "Bluepeak IT",
+      "Bluepeak"
+    ],
+    "pan": "AADCB8810Q",
+    "state_code": "27",
+    "address": "Office 504, Teerth Technospace, Baner, Pune, Maharashtra 411045",
+    "status": "ACTIVE",
+    "bank_name": "Axis Bank",
+    "bank_ifsc": "UTIB0000789",
+    "bank_account_number": "917020045563210",
+    "payment_terms_days": 30,
+    "contact_email": "finance@bluepeakit.example",
+    "gstin": "27AADCB8810Q1Z7",
+    "deactivated_on": null
+  },
+  {
+    "vendor_id": "V004",
+    "legal_name": "Ravi Rao trading as GreenLeaf Agro Supplies",
+    "aliases": [
+      "GreenLeaf Agro Supplies",
+      "Green Leaf Agro",
+      "GreenLeaf"
+    ],
+    "pan": "BQZPR4417L",
+    "state_code": "29",
+    "address": "APMC Yard, Yeshwanthpur, Bengaluru, Karnataka 560022",
+    "status": "ACTIVE",
+    "bank_name": "State Bank of India",
+    "bank_ifsc": "SBIN0040021",
+    "bank_account_number": "38211456702",
+    "payment_terms_days": 7,
+    "contact_email": "greenleafagro@example.com",
+    "gstin": "29BQZPR4417L1ZR",
+    "deactivated_on": null
+  },
+  {
+    "vendor_id": "V005",
+    "legal_name": "Annapurna Dairy Ingredients Pvt. Ltd.",
+    "aliases": [
+      "Annapurna Dairy",
+      "Annapurna Dairy Ingredients"
+    ],
+    "pan": "AAFCA6023H",
+    "state_code": "29",
+    "address": "Survey No. 88, Doddaballapur Road, Bengaluru Rural, Karnataka 561203",
+    "status": "ACTIVE",
+    "bank_name": "Canara Bank",
+    "bank_ifsc": "CNRB0002841",
+    "bank_account_number": "2841101004573",
+    "payment_terms_days": 30,
+    "contact_email": "ar@annapurnadairy.example",
+    "gstin": "29AAFCA6023H1ZS",
+    "deactivated_on": null
+  },
+  {
+    "vendor_id": "V006",
+    "legal_name": "Metro Office Essentials Pvt. Ltd.",
+    "aliases": [
+      "Metro Office Essentials",
+      "Metro Office"
+    ],
+    "pan": "AAHCM1190D",
+    "state_code": "29",
+    "address": "12 Residency Road, Bengaluru, Karnataka 560025",
+    "status": "INACTIVE",
+    "deactivated_on": "2026-09-30",
+    "bank_name": "Kotak Mahindra Bank",
+    "bank_ifsc": "KKBK0008021",
+    "bank_account_number": "8021339845",
+    "payment_terms_days": 30,
+    "contact_email": "sales@metrooffice.example",
+    "gstin": "29AAHCM1190D1ZK"
+  }
+]

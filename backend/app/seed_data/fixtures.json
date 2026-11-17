@@ -1,0 +1,587 @@
+[
+  {
+    "fixture_id": "F01",
+    "filename": "F01_happy_path_sharma.pdf",
+    "title": "Clean invoice, explicit PO, exact match",
+    "scenario": "HAPPY_PATH",
+    "description": "Text-layer PDF. Descriptions are worded differently from the PO but line matching must still pair all 3 lines.",
+    "layout": "classic",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V001",
+      "printed_name": "Sharma Packaging Solutions Pvt. Ltd.",
+      "gstin": "29AAGCS7712R1ZI",
+      "address": "No. 221, 4th Phase, Peenya Industrial Area, Bengaluru, Karnataka 560058",
+      "email": "accounts@sharmapackaging.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "SPS/26-27/0512",
+    "invoice_date": "2026-11-12",
+    "po_number_printed": "PO-2026-0412",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Corrugated Box 5 Ply (18x12x12 inch)",
+        "hsn_sac": "4819",
+        "uom": "NOS",
+        "quantity": "2000",
+        "unit_price": "42.50",
+        "tax_rate_percent": "18",
+        "line_amount": "85000.00"
+      },
+      {
+        "description": "LDPE Food Grade Liner 20 mic",
+        "hsn_sac": "3923",
+        "uom": "NOS",
+        "quantity": "2000",
+        "unit_price": "6.75",
+        "tax_rate_percent": "18",
+        "line_amount": "13500.00"
+      },
+      {
+        "description": "BOPP Tape 48mm x 65m",
+        "hsn_sac": "3919",
+        "uom": "ROLL",
+        "quantity": "300",
+        "unit_price": "38.00",
+        "tax_rate_percent": "18",
+        "line_amount": "11400.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "109900.00",
+      "net_taxable_value": "109900.00",
+      "cgst": "9891.00",
+      "sgst": "9891.00",
+      "igst": "0.00",
+      "total_tax": "19782.00",
+      "grand_total": "129682.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "HDFC Bank",
+      "ifsc": "HDFC0001234",
+      "account_number": "50200017745321",
+      "account_name": "Sharma Packaging Solutions Pvt. Ltd."
+    },
+    "footer_notes": null,
+    "expected": {
+      "decision": "APPROVE",
+      "key_checks": {
+        "C10": "PASS (explicit PO-2026-0412)",
+        "C13": "PASS 3/3 lines",
+        "C14": "PASS",
+        "C15": "PASS",
+        "C16": "PASS intrastate CGST+SGST"
+      }
+    }
+  },
+  {
+    "fixture_id": "F02",
+    "filename": "F02_split_po_overrun_deccan.pdf",
+    "title": "Third partial invoice over-bills a framework PO",
+    "scenario": "EC1_SPLIT_PO_OVERRUN",
+    "description": "Each invoice alone looks valid. Only cumulative consumption across the PO reveals the overrun. Recommended action: approve 10 trips (INR 1,18,000.00 incl. IGST) and request PO amendment or credit note for 4.",
+    "layout": "modern",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V002",
+      "printed_name": "Deccan Cold Chain Logistics LLP",
+      "gstin": "36AAJFD3349K1Z6",
+      "address": "Plot 7, Shamshabad Logistics Park, Hyderabad, Telangana 501218",
+      "email": "billing@deccancoldchain.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "DCC/2627/0788",
+    "invoice_date": "2026-11-15",
+    "po_number_printed": "PO-2026-0418",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Reefer trip BLR-HYD 20ft (Nov-26)",
+        "hsn_sac": "996511",
+        "uom": "TRIP",
+        "quantity": "14",
+        "unit_price": "10000.00",
+        "tax_rate_percent": "18",
+        "line_amount": "140000.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "140000.00",
+      "net_taxable_value": "140000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "25200.00",
+      "total_tax": "25200.00",
+      "grand_total": "165200.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "ICICI Bank",
+      "ifsc": "ICIC0000456",
+      "account_number": "045605009912",
+      "account_name": "Deccan Cold Chain Logistics LLP"
+    },
+    "footer_notes": null,
+    "expected": {
+      "decision": "REVIEW",
+      "key_checks": {
+        "C15": "FAIL->REVIEW: 14 trips billed, 10 remaining (50 ordered, 40 already billed on DCC/2627/0611 and DCC/2627/0702); over by 4 trips = INR 40,000.00 net",
+        "C14": "PASS",
+        "C16": "PASS interstate IGST"
+      }
+    }
+  },
+  {
+    "fixture_id": "F03",
+    "filename": "F03_scanned_implied_po_greenleaf.pdf",
+    "title": "Scanned image invoice, no PO number, PO inferred",
+    "scenario": "EC2_SCANNED_IMPLIED_PO",
+    "description": "Image-only PDF (no text layer). Invoice references the order by date, not number. Vendor has two open POs; process must pick the right one and explain why, then route to AP to confirm because policy forbids auto-approving an inferred PO.",
+    "layout": "compact",
+    "scanned": true,
+    "vendor": {
+      "vendor_id": "V004",
+      "printed_name": "GreenLeaf Agro Supplies",
+      "gstin": "29BQZPR4417L1ZR",
+      "address": "APMC Yard, Yeshwanthpur, Bengaluru, Karnataka 560022",
+      "email": "greenleafagro@example.com"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "GLA-1147",
+    "invoice_date": "2026-11-10",
+    "po_number_printed": null,
+    "po_reference_text": "As per your order dated 02-Nov-2026",
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Organic Jaggery Powder (25 kg bag)",
+        "hsn_sac": "1701",
+        "uom": "BAG",
+        "quantity": "40",
+        "unit_price": "1850.00",
+        "tax_rate_percent": "5",
+        "line_amount": "74000.00"
+      },
+      {
+        "description": "Rock Salt Himalayan (25 kg bag)",
+        "hsn_sac": "2501",
+        "uom": "BAG",
+        "quantity": "20",
+        "unit_price": "640.00",
+        "tax_rate_percent": "0",
+        "line_amount": "12800.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "86800.00",
+      "net_taxable_value": "86800.00",
+      "cgst": "1850.00",
+      "sgst": "1850.00",
+      "igst": "0.00",
+      "total_tax": "3700.00",
+      "grand_total": "90500.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "State Bank of India",
+      "ifsc": "SBIN0040021",
+      "account_number": "38211456702",
+      "account_name": "Ravi Rao trading as GreenLeaf Agro Supplies"
+    },
+    "footer_notes": null,
+    "expected": {
+      "decision": "REVIEW",
+      "key_checks": {
+        "ingest": "no text layer -> vision extraction",
+        "C10": "WARN->REVIEW: PO inferred as PO-2026-0431 (score >= 0.90, runner-up PO-2026-0427 < 0.10, PO date matches referenced date)",
+        "C13": "PASS 2/2",
+        "C14": "PASS",
+        "C16": "PASS mixed rates 5% and 0%"
+      }
+    }
+  },
+  {
+    "fixture_id": "F04",
+    "filename": "F04_duplicate_resubmission_bluepeak.pdf",
+    "title": "Same invoice resent with reformatted number and new date",
+    "scenario": "EC3_DUPLICATE_RESUBMISSION",
+    "description": "Exact-match duplicate detection on invoice number fails (strings differ, date differs). Normalization plus amount/vendor match catches it.",
+    "layout": "modern",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V003",
+      "printed_name": "Bluepeak IT Services Pvt. Ltd.",
+      "gstin": "27AADCB8810Q1Z7",
+      "address": "Office 504, Teerth Technospace, Baner, Pune, Maharashtra 411045",
+      "email": "finance@bluepeakit.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "BIS/INV/26/89",
+    "invoice_date": "2026-11-03",
+    "po_number_printed": "PO-2026-0398",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Endpoint Security Licence - Annual (per device)",
+        "hsn_sac": "997331",
+        "uom": "NOS",
+        "quantity": "120",
+        "unit_price": "1450.00",
+        "tax_rate_percent": "18",
+        "line_amount": "174000.00"
+      },
+      {
+        "description": "Implementation & Onboarding",
+        "hsn_sac": "998313",
+        "uom": "LS",
+        "quantity": "1",
+        "unit_price": "25000.00",
+        "tax_rate_percent": "18",
+        "line_amount": "25000.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "199000.00",
+      "net_taxable_value": "199000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "35820.00",
+      "total_tax": "35820.00",
+      "grand_total": "234820.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "Axis Bank",
+      "ifsc": "UTIB0000789",
+      "account_number": "917020045563210",
+      "account_name": "Bluepeak IT Services Pvt. Ltd."
+    },
+    "footer_notes": "Gentle reminder: payment pending for this invoice.",
+    "expected": {
+      "decision": "REJECT",
+      "key_checks": {
+        "C09": "FAIL->REJECT: normalized number BIS-INV-26-89 equals ledger invoice BIS-INV-2026-0089 (same vendor, same grand total 234820.00)",
+        "C15": "FAIL->REVIEW: PO-2026-0398 already fully billed"
+      }
+    }
+  },
+  {
+    "fixture_id": "F05",
+    "filename": "F05_bank_change_annapurna.pdf",
+    "title": "Perfect match but bank account changed on invoice",
+    "scenario": "EC4_BANK_DETAILS_CHANGED",
+    "description": "Every financial check passes, which is exactly why it is dangerous. Classic business-email-compromise pattern. Payment blocked until verified by callback to the contact on the vendor master.",
+    "layout": "classic",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V005",
+      "printed_name": "Annapurna Dairy Ingredients Pvt. Ltd.",
+      "gstin": "29AAFCA6023H1ZS",
+      "address": "Survey No. 88, Doddaballapur Road, Bengaluru Rural, Karnataka 561203",
+      "email": "ar@annapurnadairy.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "ADI/2026/1183",
+    "invoice_date": "2026-11-14",
+    "po_number_printed": "PO-2026-0440",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Skimmed Milk Powder - 25 kg bag",
+        "hsn_sac": "0402",
+        "uom": "BAG",
+        "quantity": "60",
+        "unit_price": "6200.00",
+        "tax_rate_percent": "5",
+        "line_amount": "372000.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "372000.00",
+      "net_taxable_value": "372000.00",
+      "cgst": "9300.00",
+      "sgst": "9300.00",
+      "igst": "0.00",
+      "total_tax": "18600.00",
+      "grand_total": "390600.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "ICICI Bank",
+      "ifsc": "ICIC0007314",
+      "account_number": "731405002288",
+      "account_name": "Annapurna Dairy Ingredients"
+    },
+    "footer_notes": "IMPORTANT: Please note our NEW bank account details w.e.f. 01-Nov-2026. Kindly update your records and remit to the account below.",
+    "expected": {
+      "decision": "HOLD",
+      "key_checks": {
+        "C07": "FAIL->HOLD: invoice bank ICIC0007314 / 731405002288 differs from vendor master CNRB0002841 / 2841101004573",
+        "C13": "PASS",
+        "C14": "PASS",
+        "C15": "PASS"
+      }
+    }
+  },
+  {
+    "fixture_id": "F06",
+    "filename": "F06_split_po_within_balance_deccan.pdf",
+    "title": "Third partial invoice within remaining PO balance",
+    "scenario": "BONUS_SPLIT_PO_OK",
+    "description": "Contrast case for F02. If F06 is approved first, F02 then reports 0 remaining and over by 14.",
+    "layout": "modern",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V002",
+      "printed_name": "Deccan Cold Chain Logistics LLP",
+      "gstin": "36AAJFD3349K1Z6",
+      "address": "Plot 7, Shamshabad Logistics Park, Hyderabad, Telangana 501218",
+      "email": "billing@deccancoldchain.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "DCC/2627/0791",
+    "invoice_date": "2026-11-16",
+    "po_number_printed": "PO-2026-0418",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Reefer trip BLR-HYD 20ft (Nov-26)",
+        "hsn_sac": "996511",
+        "uom": "TRIP",
+        "quantity": "10",
+        "unit_price": "10000.00",
+        "tax_rate_percent": "18",
+        "line_amount": "100000.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "100000.00",
+      "net_taxable_value": "100000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "18000.00",
+      "total_tax": "18000.00",
+      "grand_total": "118000.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "ICICI Bank",
+      "ifsc": "ICIC0000456",
+      "account_number": "045605009912",
+      "account_name": "Deccan Cold Chain Logistics LLP"
+    },
+    "footer_notes": null,
+    "expected": {
+      "decision": "APPROVE",
+      "key_checks": {
+        "C15": "PASS: 10 billed, 10 remaining -> PO line becomes 100% consumed"
+      }
+    }
+  },
+  {
+    "fixture_id": "F07",
+    "filename": "F07_tax_inclusive_greenleaf.pdf",
+    "title": "Prices quoted inclusive of GST",
+    "scenario": "BONUS_TAX_INCLUSIVE",
+    "description": "Naive comparison sees 3045 vs PO 2900 (+5%) and flags it. Correct process back-calculates net.",
+    "layout": "compact",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V004",
+      "printed_name": "GreenLeaf Agro Supplies",
+      "gstin": "29BQZPR4417L1ZR",
+      "address": "APMC Yard, Yeshwanthpur, Bengaluru, Karnataka 560022",
+      "email": "greenleafagro@example.com"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "GLA-1139",
+    "invoice_date": "2026-11-08",
+    "po_number_printed": "PO-2026-0427",
+    "po_reference_text": null,
+    "amounts_include_tax": true,
+    "line_items": [
+      {
+        "description": "Green Cardamom 8mm Bold (incl. GST 5%)",
+        "hsn_sac": "0908",
+        "uom": "KG",
+        "quantity": "15",
+        "unit_price": "3045.00",
+        "tax_rate_percent": "5",
+        "line_amount": "45675.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "45675.00",
+      "net_taxable_value": "43500.00",
+      "cgst": "1087.50",
+      "sgst": "1087.50",
+      "igst": "0.00",
+      "total_tax": "2175.00",
+      "grand_total": "45675.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "State Bank of India",
+      "ifsc": "SBIN0040021",
+      "account_number": "38211456702",
+      "account_name": "Ravi Rao trading as GreenLeaf Agro Supplies"
+    },
+    "footer_notes": "All prices are inclusive of GST.",
+    "expected": {
+      "decision": "APPROVE",
+      "key_checks": {
+        "normalize": "amounts_include_tax=true -> net unit price 3045/1.05 = 2900.00",
+        "C14": "PASS after normalization"
+      }
+    }
+  },
+  {
+    "fixture_id": "F08",
+    "filename": "F08_inactive_vendor_metro.pdf",
+    "title": "Invoice from a deactivated vendor against a closed PO",
+    "scenario": "BONUS_INACTIVE_VENDOR",
+    "description": "",
+    "layout": "classic",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V006",
+      "printed_name": "Metro Office Essentials Pvt. Ltd.",
+      "gstin": "29AAHCM1190D1ZK",
+      "address": "12 Residency Road, Bengaluru, Karnataka 560025",
+      "email": "sales@metrooffice.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": "MOE/1125/2026",
+    "invoice_date": "2026-11-11",
+    "po_number_printed": "PO-2026-0377",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "A4 Copier Paper 75 GSM (ream)",
+        "hsn_sac": "4802",
+        "uom": "REAM",
+        "quantity": "100",
+        "unit_price": "245.00",
+        "tax_rate_percent": "12",
+        "line_amount": "24500.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "24500.00",
+      "net_taxable_value": "24500.00",
+      "cgst": "1470.00",
+      "sgst": "1470.00",
+      "igst": "0.00",
+      "total_tax": "2940.00",
+      "grand_total": "27440.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "Kotak Mahindra Bank",
+      "ifsc": "KKBK0008021",
+      "account_number": "8021339845",
+      "account_name": "Metro Office Essentials Pvt. Ltd."
+    },
+    "footer_notes": null,
+    "expected": {
+      "decision": "REJECT",
+      "key_checks": {
+        "C05": "FAIL->REJECT vendor INACTIVE since 2026-09-30",
+        "C12": "FAIL->REJECT PO-2026-0377 is CLOSED"
+      }
+    }
+  },
+  {
+    "fixture_id": "F09",
+    "filename": "F09_missing_fields_bluepeak.pdf",
+    "title": "Invoice missing invoice number and date",
+    "scenario": "BONUS_MISSING_FIELDS",
+    "description": "",
+    "layout": "modern",
+    "scanned": false,
+    "vendor": {
+      "vendor_id": "V003",
+      "printed_name": "Bluepeak IT Services Pvt. Ltd.",
+      "gstin": "27AADCB8810Q1Z7",
+      "address": "Office 504, Teerth Technospace, Baner, Pune, Maharashtra 411045",
+      "email": "finance@bluepeakit.example"
+    },
+    "buyer": {
+      "name": "Kestrel Foods Pvt. Ltd.",
+      "gstin": "29AAACK4521M1ZD",
+      "address": "Plot 14, KIADB Industrial Area, Bommasandra, Bengaluru, Karnataka 560099"
+    },
+    "invoice_number": null,
+    "invoice_date": null,
+    "po_number_printed": "PO-2026-0445",
+    "po_reference_text": null,
+    "amounts_include_tax": false,
+    "line_items": [
+      {
+        "description": "Laptop repair & AMC site visit",
+        "hsn_sac": "998713",
+        "uom": "VISIT",
+        "quantity": "4",
+        "unit_price": "3500.00",
+        "tax_rate_percent": "18",
+        "line_amount": "14000.00"
+      }
+    ],
+    "printed_totals": {
+      "subtotal": "14000.00",
+      "net_taxable_value": "14000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "2520.00",
+      "total_tax": "2520.00",
+      "grand_total": "16520.00"
+    },
+    "bank_details_printed": {
+      "bank_name": "Axis Bank",
+      "ifsc": "UTIB0000789",
+      "account_number": "917020045563210",
+      "account_name": "Bluepeak IT Services Pvt. Ltd."
+    },
+    "footer_notes": null,
+    "expected": {
+      "decision": "REVIEW",
+      "key_checks": {
+        "C01": "FAIL->REVIEW missing invoice_number, invoice_date",
+        "C09": "WARN: exact duplicate check not possible; fuzzy check only",
+        "vendor_email": "draft requesting corrected tax invoice"
+      }
+    }
+  }
+]

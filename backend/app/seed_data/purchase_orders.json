@@ -1,0 +1,246 @@
+[
+  {
+    "po_number": "PO-2026-0377",
+    "vendor_id": "V006",
+    "po_date": "2026-08-12",
+    "valid_until": "2026-09-30",
+    "status": "CLOSED",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "A4 copier paper 75 GSM (ream of 500)",
+        "hsn_sac": "4802",
+        "uom": "REAM",
+        "quantity": "100",
+        "unit_price": "245.00",
+        "tax_rate_percent": "12"
+      }
+    ],
+    "computed_totals": {
+      "net": "24500.00",
+      "cgst": "1470.00",
+      "sgst": "1470.00",
+      "igst": "0.00",
+      "tax": "2940.00",
+      "grand_total": "27440.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0398",
+    "vendor_id": "V003",
+    "po_date": "2026-10-05",
+    "valid_until": "2027-03-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "Endpoint security licence, annual (per device)",
+        "hsn_sac": "997331",
+        "uom": "NOS",
+        "quantity": "120",
+        "unit_price": "1450.00",
+        "tax_rate_percent": "18"
+      },
+      {
+        "line_no": 2,
+        "description": "Implementation and onboarding services",
+        "hsn_sac": "998313",
+        "uom": "LS",
+        "quantity": "1",
+        "unit_price": "25000.00",
+        "tax_rate_percent": "18"
+      }
+    ],
+    "computed_totals": {
+      "net": "199000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "35820.00",
+      "tax": "35820.00",
+      "grand_total": "234820.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0412",
+    "vendor_id": "V001",
+    "po_date": "2026-10-20",
+    "valid_until": "2026-12-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "5-ply corrugated box 18x12x12 in",
+        "hsn_sac": "4819",
+        "uom": "NOS",
+        "quantity": "2000",
+        "unit_price": "42.50",
+        "tax_rate_percent": "18"
+      },
+      {
+        "line_no": 2,
+        "description": "Food-grade LDPE liner 20 micron",
+        "hsn_sac": "3923",
+        "uom": "NOS",
+        "quantity": "2000",
+        "unit_price": "6.75",
+        "tax_rate_percent": "18"
+      },
+      {
+        "line_no": 3,
+        "description": "BOPP tape 48 mm x 65 m",
+        "hsn_sac": "3919",
+        "uom": "ROLL",
+        "quantity": "300",
+        "unit_price": "38.00",
+        "tax_rate_percent": "18"
+      }
+    ],
+    "computed_totals": {
+      "net": "109900.00",
+      "cgst": "9891.00",
+      "sgst": "9891.00",
+      "igst": "0.00",
+      "tax": "19782.00",
+      "grand_total": "129682.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0418",
+    "vendor_id": "V002",
+    "po_date": "2026-09-15",
+    "valid_until": "2027-03-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "Reefer truck trip Bengaluru to Hyderabad, 20 ft, one way",
+        "hsn_sac": "996511",
+        "uom": "TRIP",
+        "quantity": "50",
+        "unit_price": "10000.00",
+        "tax_rate_percent": "18"
+      }
+    ],
+    "computed_totals": {
+      "net": "500000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "90000.00",
+      "tax": "90000.00",
+      "grand_total": "590000.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0427",
+    "vendor_id": "V004",
+    "po_date": "2026-10-24",
+    "valid_until": "2026-12-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "Green cardamom 8 mm bold",
+        "hsn_sac": "0908",
+        "uom": "KG",
+        "quantity": "15",
+        "unit_price": "2900.00",
+        "tax_rate_percent": "5"
+      }
+    ],
+    "computed_totals": {
+      "net": "43500.00",
+      "cgst": "1087.50",
+      "sgst": "1087.50",
+      "igst": "0.00",
+      "tax": "2175.00",
+      "grand_total": "45675.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0431",
+    "vendor_id": "V004",
+    "po_date": "2026-11-02",
+    "valid_until": "2026-12-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "Organic jaggery powder, 25 kg bag",
+        "hsn_sac": "1701",
+        "uom": "BAG",
+        "quantity": "40",
+        "unit_price": "1850.00",
+        "tax_rate_percent": "5"
+      },
+      {
+        "line_no": 2,
+        "description": "Himalayan rock salt, 25 kg bag",
+        "hsn_sac": "2501",
+        "uom": "BAG",
+        "quantity": "20",
+        "unit_price": "640.00",
+        "tax_rate_percent": "0"
+      }
+    ],
+    "computed_totals": {
+      "net": "86800.00",
+      "cgst": "1850.00",
+      "sgst": "1850.00",
+      "igst": "0.00",
+      "tax": "3700.00",
+      "grand_total": "90500.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0440",
+    "vendor_id": "V005",
+    "po_date": "2026-11-04",
+    "valid_until": "2026-12-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "Skimmed milk powder, 25 kg bag",
+        "hsn_sac": "0402",
+        "uom": "BAG",
+        "quantity": "60",
+        "unit_price": "6200.00",
+        "tax_rate_percent": "5"
+      }
+    ],
+    "computed_totals": {
+      "net": "372000.00",
+      "cgst": "9300.00",
+      "sgst": "9300.00",
+      "igst": "0.00",
+      "tax": "18600.00",
+      "grand_total": "390600.00"
+    }
+  },
+  {
+    "po_number": "PO-2026-0445",
+    "vendor_id": "V003",
+    "po_date": "2026-11-06",
+    "valid_until": "2027-03-31",
+    "status": "OPEN",
+    "lines": [
+      {
+        "line_no": 1,
+        "description": "Laptop repair and AMC site visit",
+        "hsn_sac": "998713",
+        "uom": "VISIT",
+        "quantity": "4",
+        "unit_price": "3500.00",
+        "tax_rate_percent": "18"
+      }
+    ],
+    "computed_totals": {
+      "net": "14000.00",
+      "cgst": "0.00",
+      "sgst": "0.00",
+      "igst": "2520.00",
+      "tax": "2520.00",
+      "grand_total": "16520.00"
+    }
+  }
+]
