@@ -88,7 +88,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - Extraction caching verified with live test: second invocation returns cache hit with `cached=True`.
   - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed).
   - `backend/.venv/Scripts/pytest` (26 passed in 2.27s).
-- Commit: (recorded below)
+- Commit: 3004b54
 - Notes for next phase: Proceed with Phase 4 Pipeline & rules.
 
 ### P4 Pipeline & rules — in progress
