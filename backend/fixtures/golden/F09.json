@@ -8,7 +8,7 @@
   "invoice_date": null,
   "invoice_date_raw": null,
   "currency": "INR",
-  "po_number": null,
+  "po_number": "PO-2026-0445",
   "po_reference_text": null,
   "amounts_include_tax": false,
   "line_items": [

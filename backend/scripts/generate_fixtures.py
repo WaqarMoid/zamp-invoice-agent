@@ -610,7 +610,7 @@ def generate_golden_json(fix: dict, out_json_path: Path):
     inv_num = None if fid == "F09" else fix.get("invoice_number")
     inv_date = None if fid == "F09" else fix.get("invoice_date")
     inv_raw_date = None if fid == "F09" else raw_date
-    po_num = None if fid in ("F03", "F09") else fix.get("po_number_printed")
+    po_num = None if fid == "F03" else fix.get("po_number_printed")
     po_ref = "As per your order dated 02-Nov-2026" if fid == "F03" else fix.get("po_reference_text")
 
     sub_tot = Decimal(str(totals["subtotal"])) if totals.get("subtotal") is not None else None

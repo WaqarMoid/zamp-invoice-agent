@@ -3,16 +3,16 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P3 Extraction (blocked on GEMINI_API_KEY)
-- **Next action:** Run `eval_extraction.py` once GEMINI_API_KEY is configured in `backend/.env`.
+- **Current phase:** P4 Pipeline & rules
+- **Next action:** Implement rules engine, stages C01..C21, matching, reconciliation, runner, and golden pipeline tests per doc 07.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
-- **LLM model in use:** gemini-2.5-flash
+- **LLM model in use:** gemini-3.5-flash-lite
 
 ## Phase checklist
 - [x] P0 Bootstrap
 - [x] P1 Data layer
 - [x] P2 Fixtures
-- [ ] P3 Extraction
+- [x] P3 Extraction
 - [ ] P4 Pipeline & rules
 - [ ] P5 API & streaming
 - [ ] P6a Tokens, fonts, shell, components
@@ -71,43 +71,44 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - Commit: 1a69890
 - Notes for next phase: Proceed with Phase 3 Extraction.
 
-### P3 Extraction — in progress (blocked on GEMINI_API_KEY)
+### P3 Extraction — done
 - Built:
   - System prompt: `backend/app/extraction/prompt.py` (verbatim from doc 06 §6.3 with layout instructions).
   - Text layer extraction: `backend/app/extraction/text_layer.py` (layout=True extraction via pdfplumber, page break markers, 30k char truncation, text layer detection).
   - Vision rendering: `backend/app/extraction/render.py` (PyMuPDF 200 DPI rendering to PNG bytes, 2400px downscaling).
   - Heuristic fallback: `backend/app/extraction/heuristic.py` (regex + table parser emitting confidence 0.60).
   - LLM client: `backend/app/extraction/llm_client.py` (Protocol) and `backend/app/extraction/gemini.py` (GeminiExtractor using `google-genai` SDK with `MirrorInvoice` float-safe schema, temperature=0, structured JSON output, post-parse guards, and 3 retry attempts with exponential backoff).
+  - Model selection: Switched default from `gemini-2.5-flash` to `gemini-3.5-flash-lite` because Google AI Studio enforces an aggressive 20 RPD cap on `gemini-2.5-flash` Free Tier, whereas `gemini-3.5-flash-lite` provides generous free tier quotas, rapid 2-4s latency, and full multimodal vision support for scanned PDFs.
   - Cache layer: `backend/app/extraction/cache.py` (SHA-256 caching for `ExtractionCache`).
   - Evaluation tool: `backend/scripts/eval_extraction.py` (evaluates critical fields across F01..F09 against golden JSONs and outputs markdown report).
   - Unit tests: `backend/tests/test_extraction_utils.py` and `backend/tests/test_extraction_cache.py`.
 - Verified:
-  - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
-  - `backend/.venv/Scripts/pytest` (26 passed in 2.16s)
-- Notes for next phase: Awaiting GEMINI_API_KEY in `backend/.env` to run live evaluation against all 9 fixtures.
+  - `eval_extraction.py` executed live with `gemini-3.5-flash-lite`: 100.0% accuracy across F01..F09 (90/90 checks passed). Detailed report saved at `backend/reports/extraction_eval.md`.
+  - Scanned invoice F03 (0 text characters) was rendered to 200 DPI PNG and read via the multimodal vision path with 10/10 accuracy.
+  - Extraction caching verified with live test: second invocation returns cache hit with `cached=True`.
+  - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed).
+  - `backend/.venv/Scripts/pytest` (26 passed in 2.27s).
+- Commit: (recorded below)
+- Notes for next phase: Proceed with Phase 4 Pipeline & rules.
+
+### P4 Pipeline & rules — in progress
+- Plan:
+  - Implement rules messages (`messages.py`) for C01..C21.
+  - Implement PO line matching and PO inference scoring (`matching.py`).
+  - Implement all 21 checks C01..C21 (`checks.py`) returning CheckResult schemas.
+  - Implement decision resolution (`actions.py`) and email draft generator (`email_draft.py`).
+  - Implement SSE event broker (`events.py`), context (`context.py`), stages (`stages/`), and pipeline runner (`runner.py`).
+  - Write test suite `test_golden.py` verifying all 9 fixtures (F01..F09) and sequential balance tests against expected decisions per doc 07, producing `backend/reports/golden_results.md`.
 
 ## Handoff notes (for a fresh session with empty context)
-- P0, P1, P2 are done and tested (26 passed tests).
-- Phase 3 extraction pipeline (Gemini client, prompt, text/vision renderers, heuristic fallback, cache layer, evaluation script) is implemented and unit tested.
-- P3 is waiting on GEMINI_API_KEY in `backend/.env` to run `eval_extraction.py` against live Gemini and produce `backend/reports/extraction_eval.md`.
+- P0, P1, P2, and P3 are completely done and all tests pass (26/26 pytest).
+- Model in use: `gemini-3.5-flash-lite` configured in `backend/.env`, `app/config.py`, and `render.yaml`.
+- Extraction evaluation report at `backend/reports/extraction_eval.md` achieves 100% (90/90 checks).
+- Ready for Phase 4 implementation (rules engine, stages, runner, golden tests).
 
 ## Deviations log
-<!-- Any place the implementation differs from docs/, with reason. Spec gaps you resolved and how. -->
+- **Model selection**: Switched default LLM from `gemini-2.5-flash` to `gemini-3.5-flash-lite`. Gemini Developer API Free Tier capped `gemini-2.5-flash` at 20 requests per day (`RESOURCE_EXHAUSTED`). `gemini-3.5-flash-lite` has higher free-tier limits, fast response times (2-4s), and achieved 100% extraction accuracy on both text and vision/scanned invoices.
+- **Gemini response schema**: Pydantic's `dict[str, float]` causes `additionalProperties` error on Google AI Studio API. Replaced with `MirrorFieldConfidence` explicit float fields.
 
 ## Waiting on Waqar (HUMAN steps)
-1. Add your Gemini API key to `backend/.env`:
-   `GEMINI_API_KEY=AIzaSy...` (get a key from https://aistudio.google.com/ if needed).
-2. Tell me in chat once added so I can execute `python backend/scripts/eval_extraction.py` live to verify 100% extraction accuracy on F01-F09 and proceed with Phase 4.
-
-## Handoff notes (for a fresh session with empty context)
-- P0 and P1 are complete and all tests pass (17/17 pytest).
-- DB models in `backend/app/models.py`, seed script in `backend/app/seed.py`.
-- Rules utilities in `backend/app/rules/` (money, gstin, text, dates, consumption).
-- Procurement endpoints active in `backend/app/api/procurement.py`.
-- Generating F01..F09 invoice PDFs and golden JSONs.
-
-## Deviations log
-<!-- Any place the implementation differs from docs/, with reason. Spec gaps you resolved and how. -->
-
-## Waiting on Waqar (HUMAN steps)
-<!-- e.g. "GEMINI_API_KEY needed in backend/.env", "gh auth login", Render/Vercel/Neon clicks from docs/11 -->
+<!-- None at this time. All API keys and environment configurations are in place. -->

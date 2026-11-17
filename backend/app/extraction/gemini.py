@@ -16,7 +16,7 @@ logger = logging.getLogger("kestrel-ap.extraction.gemini")
 
 
 # ---------------------------------------------------------------------------
-# Mirror Pydantic schema using float for OpenAPI compatibility
+# Mirror Pydantic schema using float and fixed fields for OpenAPI compatibility
 # ---------------------------------------------------------------------------
 
 class MirrorLine(BaseModel):
@@ -42,6 +42,16 @@ class MirrorTax(BaseModel):
     igst: float | None = None
 
 
+class MirrorFieldConfidence(BaseModel):
+    vendor_name: float = 1.0
+    vendor_gstin: float = 1.0
+    invoice_number: float = 1.0
+    invoice_date: float = 1.0
+    grand_total: float = 1.0
+    po_number: float = 1.0
+    line_items: float = 1.0
+
+
 class MirrorInvoice(BaseModel):
     vendor_name: str | None = None
     vendor_gstin: str | None = None
@@ -62,7 +72,7 @@ class MirrorInvoice(BaseModel):
     grand_total: float | None = None
     bank_details: MirrorBank | None = None
     notes: str | None = None
-    field_confidence: dict[str, float] = Field(default_factory=dict)
+    field_confidence: MirrorFieldConfidence = Field(default_factory=MirrorFieldConfidence)
     warnings: list[str] = Field(default_factory=list)
 
 
@@ -125,6 +135,20 @@ def convert_mirror_to_extracted_invoice(m: MirrorInvoice) -> ExtractedInvoice:
     if not lines:
         warnings.append("No line items extracted from document.")
 
+    conf_dict = (
+        m.field_confidence.model_dump()
+        if hasattr(m.field_confidence, "model_dump")
+        else dict(m.field_confidence or {})
+    )
+
+    tot_tax = to_decimal(m.total_tax)
+    if tot_tax is None and (tax.cgst is not None or tax.sgst is not None or tax.igst is not None):
+        tot_tax = (
+            (tax.cgst or Decimal("0.00"))
+            + (tax.sgst or Decimal("0.00"))
+            + (tax.igst or Decimal("0.00"))
+        )
+
     return ExtractedInvoice(
         vendor_name=m.vendor_name,
         vendor_gstin=vendor_gstin,
@@ -141,11 +165,11 @@ def convert_mirror_to_extracted_invoice(m: MirrorInvoice) -> ExtractedInvoice:
         line_items=lines,
         subtotal=to_decimal(m.subtotal),
         tax=tax,
-        total_tax=to_decimal(m.total_tax),
+        total_tax=tot_tax,
         grand_total=to_decimal(m.grand_total),
         bank_details=bank,
         notes=m.notes,
-        field_confidence=m.field_confidence or {},
+        field_confidence=conf_dict,
         warnings=warnings,
     )
 
@@ -158,7 +182,10 @@ class GeminiExtractor:
         self.model = model or settings.GEMINI_MODEL or "gemini-2.5-flash"
         self.api_key = api_key or settings.GEMINI_API_KEY
         if self.api_key:
-            self.client = genai.Client(api_key=self.api_key)
+            self.client = genai.Client(
+                api_key=self.api_key,
+                http_options={"api_version": "v1beta"},
+            )
         else:
             self.client = None
 
