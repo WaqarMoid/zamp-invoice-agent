@@ -68,7 +68,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
   - `backend/.venv/Scripts/pytest` (21 passed in 1.93s, including `test_fixtures.py`)
   - All 9 PDFs exist in `backend/fixtures/` and 9 golden JSONs exist in `backend/fixtures/golden/`
-- Commit: pending commit
+- Commit: 1a69890
 - Notes for next phase: Proceed with Phase 3 Extraction.
 
 ## Handoff notes (for a fresh session with empty context)
