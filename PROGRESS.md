@@ -3,14 +3,14 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P1 Data layer (not started)
-- **Next action:** Read docs/04, 05 §5.1-5.2, 07 §7.4.0, 10 §10.1 and implement DB models, seed loader, helper utils, and procurement endpoints.
+- **Current phase:** P2 Fixtures (not started)
+- **Next action:** Read docs/05 §5.3-5.6 and build backend/scripts/generate_fixtures.py to generate 9 invoice PDFs + golden JSONs.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** _tbd (set in P3)_
 
 ## Phase checklist
 - [x] P0 Bootstrap
-- [ ] P1 Data layer
+- [x] P1 Data layer
 - [ ] P2 Fixtures
 - [ ] P3 Extraction
 - [ ] P4 Pipeline & rules
@@ -39,7 +39,27 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
   - `npm --prefix frontend run build` (built cleanly in 5.07s)
 - Commit: 84b44a7
-- Notes for next phase: Proceed with Phase 1 Data layer (SQLAlchemy models, SQLite DB, seed loading, utility rules: money, gstin, text, dates, and API endpoints for vendors and purchase orders).
+- Notes for next phase: Proceed with Phase 1 Data layer.
+
+### P1 Data layer — done
+- Built:
+  - Rules utilities: `backend/app/rules/money.py` (Decimal money parsing, paise round-trip, quantize with ROUND_HALF_UP), `gstin.py` (checksum algorithm, regex, state code extraction), `text.py` (invoice and PO number tokenization/normalization per doc 07 §7.4.0, description similarity via rapidfuzz), `dates.py` (robust day-first date parsing with ISO preservation), `consumption.py` (PO line consumption computation from APPROVED ledger rows).
+  - Database layer: `backend/app/db.py` (engine supporting SQLite pragma foreign_keys=ON and Neon PostgreSQL with psycopg connection pooling), `models.py` (all 11 ORM models per doc 04 §4.2), `schemas.py` (Pydantic domain models for extraction, normalization, decisions, and API responses).
+  - Seed loader: `backend/app/seed.py` (loads buyer, 6 vendors, 8 POs with lines, and 3 prior approved invoices into ledger; supports force wipe).
+  - API endpoints: `backend/app/api/procurement.py` (`/api/vendors` with masked bank accounts `••••` + last 4, `/api/purchase-orders` with cumulative consumption and billing states, `/api/purchase-orders/{po}` with detailed ledger invoice history).
+- Verified:
+  - `backend/.venv/Scripts/ruff check backend` (clean, all checks passed)
+  - `backend/.venv/Scripts/pytest` (17 passed in 1.09s, covering test_money, test_gstin, test_text, test_dates, test_health, test_procurement)
+  - SQLite creation and seeding verified (6 vendors, 8 POs, 3 prior invoices)
+- Commit: pending commit
+- Notes for next phase: Proceed with Phase 2 Fixtures (PDF fixture generator in scripts/generate_fixtures.py, generating F01-F09 PDFs and golden JSONs).
+
+## Handoff notes (for a fresh session with empty context)
+- P0 and P1 are complete and all tests pass (17/17 pytest).
+- DB models in `backend/app/models.py`, seed script in `backend/app/seed.py`.
+- Rules utilities in `backend/app/rules/` (money, gstin, text, dates, consumption).
+- Procurement endpoints active in `backend/app/api/procurement.py`.
+- Ready to start Phase 2 Fixtures.
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 Bootstrap is complete.

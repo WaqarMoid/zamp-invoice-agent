@@ -5,7 +5,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.health import router as health_router
+from app.api.procurement import router as procurement_router
 from app.config import get_settings
+from app.db import Base, SessionLocal, engine
+from app.seed import seed
 
 settings = get_settings()
 
@@ -19,7 +22,11 @@ logger = logging.getLogger("kestrel-ap")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Starting Kestrel AP · Invoice desk API backend...")
-    # Table initialization and seeding will hook in P1
+    # Initialize database tables
+    Base.metadata.create_all(bind=engine)
+    # Seed data if unseeded
+    with SessionLocal() as session:
+        seed(session, force=False)
     yield
     logger.info("Shutting down Kestrel AP · Invoice desk API backend...")
 
@@ -41,6 +48,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health_router)
+app.include_router(procurement_router)
 
 
 @app.get("/")
