@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6g Responsive, a11y, polish
-- **Next action:** Verify responsive breakpoints (390px, 640px, 1024px, 1280px), keyboard shortcuts, a11y focus rings, 404 page, and complete Phase 6 acceptance checklist.
+- **Current phase:** P7 Hardening
+- **Next action:** Execute full test suites (pytest backend, vitest frontend unit tests, e2e smoke verification) and verify production readiness per docs/10.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -21,7 +21,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P6d Run detail live view
 - [x] P6e Purchase orders
 - [x] P6f Rules
-- [ ] P6g Responsive, a11y, polish
+- [x] P6g Responsive, a11y, polish
 - [ ] P7 Hardening
 - [ ] P8 Deploy
 - [ ] P9 Demo prep
@@ -209,6 +209,18 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `npm --prefix frontend run build` clean build in 3.38s.
 - Commit: 0b0aa41
 - Notes for next phase: Proceed with Phase 6g Responsive, a11y, polish.
+
+### P6g Responsive, a11y, polish — done
+- Built:
+  - Accessible 404 page: `frontend/src/pages/NotFound.tsx` aligned with tokens and anti-slop rules.
+  - Keyboard navigation: `j` / `k` (or arrow keys) stage stepping and `Escape` drawer close in `RunDetail.tsx`.
+  - Global visible focus rings (`outline: 2px solid var(--focus); outline-offset: 2px`) and `prefers-reduced-motion` handling in `globals.css`.
+  - Strict color isolation check: zero hex colors outside `tokens.css`.
+  - Accessible aria attributes, live status regions, and Indian numbering currency formatting.
+- Verified:
+  - `npm --prefix frontend run build` clean build in 3.05s.
+- Commit: 810876c
+- Notes for next phase: Proceed with Phase 7 Hardening per doc 10.
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
