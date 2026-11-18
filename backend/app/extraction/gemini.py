@@ -19,6 +19,7 @@ logger = logging.getLogger("kestrel-ap.extraction.gemini")
 # Mirror Pydantic schema using float and fixed fields for OpenAPI compatibility
 # ---------------------------------------------------------------------------
 
+
 class MirrorLine(BaseModel):
     description: str
     hsn_sac: str | None = None
@@ -144,9 +145,7 @@ def convert_mirror_to_extracted_invoice(m: MirrorInvoice) -> ExtractedInvoice:
     tot_tax = to_decimal(m.total_tax)
     if tot_tax is None and (tax.cgst is not None or tax.sgst is not None or tax.igst is not None):
         tot_tax = (
-            (tax.cgst or Decimal("0.00"))
-            + (tax.sgst or Decimal("0.00"))
-            + (tax.igst or Decimal("0.00"))
+            (tax.cgst or Decimal("0.00")) + (tax.sgst or Decimal("0.00")) + (tax.igst or Decimal("0.00"))
         )
 
     return ExtractedInvoice(
@@ -217,9 +216,7 @@ class GeminiExtractor:
                 return response.text
             except Exception as e:
                 last_error = e
-                logger.warning(
-                    "Gemini API attempt %d/%d failed: %s", attempt + 1, attempts, e
-                )
+                logger.warning("Gemini API attempt %d/%d failed: %s", attempt + 1, attempts, e)
                 if attempt < attempts - 1:
                     time.sleep(backoffs[attempt])
 

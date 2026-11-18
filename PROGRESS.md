@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P4 Pipeline & rules
-- **Next action:** Implement rules engine, stages C01..C21, matching, reconciliation, runner, and golden pipeline tests per doc 07.
+- **Current phase:** P5 API & streaming
+- **Next action:** Implement endpoints in `app/api/runs.py`, `app/api/stats.py`, `app/api/admin.py`, SSE streaming per doc 08, and `test_api.py`.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -13,7 +13,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P1 Data layer
 - [x] P2 Fixtures
 - [x] P3 Extraction
-- [ ] P4 Pipeline & rules
+- [x] P4 Pipeline & rules
 - [ ] P5 API & streaming
 - [ ] P6a Tokens, fonts, shell, components
 - [ ] P6b Dashboard
@@ -91,24 +91,46 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - Commit: 3004b54
 - Notes for next phase: Proceed with Phase 4 Pipeline & rules.
 
-### P4 Pipeline & rules — in progress
+### P4 Pipeline & rules — done
+- Built:
+  - Rules catalogue & messages: `backend/app/rules/messages.py` (C01..C21 names and fixed stage keys).
+  - Greedy line matching and PO inference scoring: `backend/app/rules/matching.py` (greedy line pairing by composite score >= 0.60; candidate PO inference scoring based on line coverage, amount fit, and order date bonus).
+  - Checks engine: `backend/app/rules/checks.py` (complete implementation of C01..C21 with exact tolerances, regimes, and SQL NULL-safe candidate filtering).
+  - Decision aggregation: `backend/app/rules/actions.py` (strict precedence REJECT > HOLD > REVIEW > APPROVE, headline generation, deduplicated ordered action items, due date calculation, key facts).
+  - Vendor email draft generator: `backend/app/rules/email_draft.py` (deterministic second-person template for vendor-fixable flags in REVIEW/REJECT; strictly excluded for HOLD).
+  - Human review service: `backend/app/rules/review.py` (enforces 409 status checks, 422 minimum note length, and mandatory bank_verified=True guard for HOLD).
+  - SSE event broker: `backend/app/pipeline/events.py` (persists contiguous run_events sequence and publishes to active asyncio queues).
+  - Pipeline context & stages: `backend/app/pipeline/context.py` and `backend/app/pipeline/stages/` (ingest, extract, normalize, vendor, duplicates, po_match, reconcile, decide).
+  - Pipeline runner: `backend/app/pipeline/runner.py` (sequential runner protected by module-level asyncio.Lock, handles stage lifecycles, error boundaries, check persistence, event broadcasting, and ledger entry generation).
+  - Unit & regression tests: `backend/tests/test_matching.py`, `backend/tests/test_consumption.py`, `backend/tests/test_checks.py`, `backend/tests/test_email_draft.py`, and `backend/tests/test_golden.py`.
+- Verified:
+  - Full golden regression suite (`test_golden.py`): all 9 fixture assertions (F01..F09) pass, matching doc 07 §7.9 expected decisions and flag severities.
+  - All 4 sequence tests pass (F06 then F02 zero-balance overrun, F01 duplicate resubmission rejection with same-file hash, F02 human approval causing 108% overrun billing, and F05 bank verification validation).
+  - `backend/reports/golden_results.md` generated with full status matrix.
+  - `backend/.venv/Scripts/ruff check backend` (clean, 0 errors).
+  - `backend/.venv/Scripts/pytest` (all 64 tests passed in 6.07s).
+- Commit: (recorded below)
+- Notes for next phase: Proceed with Phase 5 API & streaming.
+
+### P5 API & streaming — in progress
 - Plan:
-  - Implement rules messages (`messages.py`) for C01..C21.
-  - Implement PO line matching and PO inference scoring (`matching.py`).
-  - Implement all 21 checks C01..C21 (`checks.py`) returning CheckResult schemas.
-  - Implement decision resolution (`actions.py`) and email draft generator (`email_draft.py`).
-  - Implement SSE event broker (`events.py`), context (`context.py`), stages (`stages/`), and pipeline runner (`runner.py`).
-  - Write test suite `test_golden.py` verifying all 9 fixtures (F01..F09) and sequential balance tests against expected decisions per doc 07, producing `backend/reports/golden_results.md`.
+  - Implement `/api/samples` and `/api/samples/{id}/file`.
+  - Implement `/api/runs` (POST multipart and JSON sample, GET list with filters/search, GET run detail, GET document, GET pages/{n}.png).
+  - Implement `/api/runs/{id}/events` SSE streaming endpoint using `EventSourceResponse` with replay and broker subscription.
+  - Implement `/api/runs/{id}/review` human review endpoint.
+  - Implement `/api/stats` and `/api/admin/reset` (gated by DEMO_MODE).
+  - Verify all curl checks from doc 08 §8.5 and write `test_api.py`.
 
 ## Handoff notes (for a fresh session with empty context)
-- P0, P1, P2, and P3 are completely done and all tests pass (26/26 pytest).
-- Model in use: `gemini-3.5-flash-lite` configured in `backend/.env`, `app/config.py`, and `render.yaml`.
-- Extraction evaluation report at `backend/reports/extraction_eval.md` achieves 100% (90/90 checks).
-- Ready for Phase 4 implementation (rules engine, stages, runner, golden tests).
+- P0, P1, P2, P3, and P4 are complete and all tests pass (64/64 pytest).
+- Entire deterministic rules engine (C01..C21), PO matching & inference, stage pipeline, runner, and ledger writing are tested and working.
+- Golden evaluation results written to `backend/reports/golden_results.md`.
+- Next step: Phase 5 API & streaming per `docs/08_API_CONTRACT.md`.
 
 ## Deviations log
 - **Model selection**: Switched default LLM from `gemini-2.5-flash` to `gemini-3.5-flash-lite`. Gemini Developer API Free Tier capped `gemini-2.5-flash` at 20 requests per day (`RESOURCE_EXHAUSTED`). `gemini-3.5-flash-lite` has higher free-tier limits, fast response times (2-4s), and achieved 100% extraction accuracy on both text and vision/scanned invoices.
 - **Gemini response schema**: Pydantic's `dict[str, float]` causes `additionalProperties` error on Google AI Studio API. Replaced with `MirrorFieldConfidence` explicit float fields.
+- **Duplicate query SQL NULL safety**: In SQL, `run_id != current_run_id` evaluates to NULL/false when `run_id` is NULL (such as seed ledger rows). Updated `check_c09` filter to `or_(InvoiceLedger.run_id.is_(None), InvoiceLedger.run_id != current_run_id)` so prior seed invoices are correctly checked.
 
 ## Waiting on Waqar (HUMAN steps)
 <!-- None at this time. All API keys and environment configurations are in place. -->

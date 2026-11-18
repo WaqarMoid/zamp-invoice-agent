@@ -23,9 +23,7 @@ def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> tuple[str, bool, list[str]]
         with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
             total_pages = len(pdf.pages)
             if total_pages > MAX_PAGES:
-                warnings.append(
-                    f"PDF has {total_pages} pages; only first {MAX_PAGES} processed."
-                )
+                warnings.append(f"PDF has {total_pages} pages; only first {MAX_PAGES} processed.")
 
             pages_to_process = pdf.pages[:MAX_PAGES]
             for page in pages_to_process:

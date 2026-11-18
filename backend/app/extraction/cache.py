@@ -15,9 +15,7 @@ def compute_sha256(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
-def get_cached_extraction(
-    session: Session, sha256: str
-) -> tuple[ExtractedInvoice, str, str] | None:
+def get_cached_extraction(session: Session, sha256: str) -> tuple[ExtractedInvoice, str, str] | None:
     """
     Look up extraction cache by document SHA-256.
     Returns (ExtractedInvoice, method, model) or None if not cached.

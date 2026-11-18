@@ -24,11 +24,11 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
 
     # Business rules thresholds (doc 07 §7.3)
-    PRICE_TOLERANCE_PCT: float = 1.0          # percent
+    PRICE_TOLERANCE_PCT: float = 1.0  # percent
     PRICE_TOLERANCE_ABS_INR: float = 1000.00  # rupees; line tolerance = min(pct, abs)
     ROUNDING_TOLERANCE_INR: float = 1.00
     EXTRACTION_MIN_CONFIDENCE: float = 0.80
-    VENDOR_NAME_MATCH_MIN: float = 88.0       # rapidfuzz token_set_ratio, 0-100
+    VENDOR_NAME_MATCH_MIN: float = 88.0  # rapidfuzz token_set_ratio, 0-100
     LINE_MATCH_MIN_SCORE: float = 0.60
     PO_INFER_MIN_SCORE: float = 0.75
     PO_INFER_MIN_MARGIN: float = 0.15

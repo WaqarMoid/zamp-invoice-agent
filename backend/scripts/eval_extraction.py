@@ -64,9 +64,7 @@ def evaluate_fixture(extractor: GeminiExtractor, fix: dict) -> dict[str, bool]:
     results["invoice_number"] = compare_field(extracted.invoice_number, golden.invoice_number)
     results["invoice_date"] = compare_field(extracted.invoice_date, golden.invoice_date)
     results["po_number"] = compare_field(extracted.po_number, golden.po_number)
-    results["amounts_include_tax"] = compare_field(
-        extracted.amounts_include_tax, golden.amounts_include_tax
-    )
+    results["amounts_include_tax"] = compare_field(extracted.amounts_include_tax, golden.amounts_include_tax)
     results["grand_total"] = compare_field(extracted.grand_total, golden.grand_total)
     results["total_tax"] = compare_field(extracted.total_tax, golden.total_tax)
 

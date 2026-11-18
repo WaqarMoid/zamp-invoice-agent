@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 # Extraction models (doc 04 §4.3)
 # ---------------------------------------------------------------------------
 
+
 class ExtractedLine(BaseModel):
     description: str
     hsn_sac: str | None = None
@@ -38,11 +39,11 @@ class ExtractedInvoice(BaseModel):
     buyer_name: str | None = None
     buyer_gstin: str | None = None
     invoice_number: str | None = None
-    invoice_date: str | None = None          # ISO YYYY-MM-DD or None
-    invoice_date_raw: str | None = None      # exactly as printed
+    invoice_date: str | None = None  # ISO YYYY-MM-DD or None
+    invoice_date_raw: str | None = None  # exactly as printed
     currency: str | None = "INR"
     po_number: str | None = None
-    po_reference_text: str | None = None     # any text referring to an order without a PO number
+    po_reference_text: str | None = None  # any text referring to an order without a PO number
     amounts_include_tax: bool = False
     line_items: list[ExtractedLine] = Field(default_factory=list)
     subtotal: Decimal | None = None
@@ -50,7 +51,7 @@ class ExtractedInvoice(BaseModel):
     total_tax: Decimal | None = None
     grand_total: Decimal | None = None
     bank_details: BankDetails | None = None
-    notes: str | None = None                 # footer remarks
+    notes: str | None = None  # footer remarks
     field_confidence: dict[str, float] = Field(default_factory=dict)
     warnings: list[str] = Field(default_factory=list)
 
@@ -58,6 +59,7 @@ class ExtractedInvoice(BaseModel):
 # ---------------------------------------------------------------------------
 # Normalization models (doc 04 §4.3)
 # ---------------------------------------------------------------------------
+
 
 class NormalizedLine(BaseModel):
     index: int
@@ -74,7 +76,7 @@ class NormalizedLine(BaseModel):
 
 class NormalizedInvoice(BaseModel):
     vendor_name: str | None = None
-    vendor_gstin: str | None = None          # uppercased, spaces stripped
+    vendor_gstin: str | None = None  # uppercased, spaces stripped
     buyer_gstin: str | None = None
     invoice_number: str | None = None
     invoice_number_norm: str | None = None
@@ -97,8 +99,31 @@ class NormalizedInvoice(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Check & Stage Models (doc 07 §7.2, §7.5)
+# ---------------------------------------------------------------------------
+
+
+class CheckResult(BaseModel):
+    check_id: str  # "C01".."C21"
+    stage_key: str  # "normalize", "vendor", etc.
+    name: str  # short UI name from table 7.3
+    outcome: Literal["PASS", "INFO", "FLAG", "SKIP"]
+    severity: Literal["REVIEW", "HOLD", "REJECT"] | None = None
+    message: str
+    evidence: dict[str, Any] = Field(default_factory=dict)
+
+
+class StageOutcome(BaseModel):
+    status: Literal["PASSED", "FLAGGED", "FAILED", "SKIPPED"]
+    summary: str  # max 90 chars, no em dashes
+    output: dict[str, Any] = Field(default_factory=dict)
+    checks: list[CheckResult] = Field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
 # Decision / RunResult models (doc 04 §4.4)
 # ---------------------------------------------------------------------------
+
 
 class Reason(BaseModel):
     check_id: str
@@ -109,12 +134,12 @@ class Reason(BaseModel):
 
 class Decision(BaseModel):
     decision: Literal["APPROVE", "REVIEW", "HOLD", "REJECT"]
-    label: str                               # "Approved" | "Needs review" | "On hold" | "Rejected"
+    label: str  # "Approved" | "Needs review" | "On hold" | "Rejected"
     headline: str
     reasons: list[Reason] = Field(default_factory=list)
     recommended_actions: list[str] = Field(default_factory=list)
     payment_block: bool = False
-    due_date: date | None = None             # APPROVE only
+    due_date: date | None = None  # APPROVE only
     vendor_email: dict[str, str] | None = None  # {"subject": str, "body": str}
     key_facts: dict[str, Any] = Field(default_factory=dict)
 
@@ -128,6 +153,7 @@ class RunResult(BaseModel):
 # ---------------------------------------------------------------------------
 # API schemas for Vendors and Purchase Orders (doc 05 §5.2, doc 08 §8.1)
 # ---------------------------------------------------------------------------
+
 
 class VendorOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -143,7 +169,7 @@ class VendorOut(BaseModel):
     deactivated_on: date | None = None
     bank_name: str
     bank_ifsc: str
-    bank_account_masked: str                 # '••••' + last 4
+    bank_account_masked: str  # '••••' + last 4
     payment_terms_days: int
     contact_email: str
 
@@ -155,11 +181,11 @@ class POLineOut(BaseModel):
     description: str
     hsn_sac: str | None = None
     uom: str
-    quantity: str                           # decimal formatted, trailing zeros stripped
-    unit_price: str                         # decimal formatted with 2 dp
-    tax_rate: str                           # e.g. "18"
-    billed_quantity: str                    # sum of approved ledger lines
-    remaining_quantity: str                 # quantity - billed_quantity
+    quantity: str  # decimal formatted, trailing zeros stripped
+    unit_price: str  # decimal formatted with 2 dp
+    tax_rate: str  # e.g. "18"
+    billed_quantity: str  # sum of approved ledger lines
+    remaining_quantity: str  # quantity - billed_quantity
 
 
 class PurchaseOrderOut(BaseModel):
@@ -168,13 +194,13 @@ class PurchaseOrderOut(BaseModel):
     po_number: str
     vendor_id: str
     vendor_name: str
-    po_date: str                            # YYYY-MM-DD
-    valid_until: str                        # YYYY-MM-DD
-    status: str                             # OPEN | CLOSED | CANCELLED
+    po_date: str  # YYYY-MM-DD
+    valid_until: str  # YYYY-MM-DD
+    status: str  # OPEN | CLOSED | CANCELLED
     po_number_norm: str
-    total_amount: str                       # calculated from lines
+    total_amount: str  # calculated from lines
     lines: list[POLineOut]
-    billing_state: str                      # UNBILLED | PARTIALLY_BILLED | FULLY_BILLED | OVERBILLED
+    billing_state: str  # UNBILLED | PARTIALLY_BILLED | FULLY_BILLED | OVERBILLED
     billed_percentage: float
 
 

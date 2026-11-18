@@ -28,6 +28,7 @@ GOLDEN_DIR = FIXTURES_DIR / "golden"
 # Formatting helpers
 # ---------------------------------------------------------------------------
 
+
 def format_indian_number(val: Decimal | str | float) -> str:
     dec = Decimal(str(val))
     s = f"{dec:.2f}"
@@ -47,8 +48,26 @@ def format_indian_number(val: Decimal | str | float) -> str:
 
 def num_to_words_indian(n: int) -> str:
     units = [
-        "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
-        "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen",
+        "",
+        "One",
+        "Two",
+        "Three",
+        "Four",
+        "Five",
+        "Six",
+        "Seven",
+        "Eight",
+        "Nine",
+        "Ten",
+        "Eleven",
+        "Twelve",
+        "Thirteen",
+        "Fourteen",
+        "Fifteen",
+        "Sixteen",
+        "Seventeen",
+        "Eighteen",
+        "Nineteen",
     ]
     tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
 
@@ -116,6 +135,7 @@ def format_raw_date(dt_str: str | None, layout: str) -> str | None:
 # ---------------------------------------------------------------------------
 # PDF Layout Builder
 # ---------------------------------------------------------------------------
+
 
 def build_pdf_story(fix: dict, layout: str) -> list:
     """Build the flowables for an invoice fixture according to its layout."""
@@ -199,35 +219,37 @@ def build_pdf_story(fix: dict, layout: str) -> list:
     if layout == "classic":
         header_table = Table([[vendor_p, meta_p]], colWidths=[105 * mm, 75 * mm])
         header_table.setStyle(
-            TableStyle([
-                ("BOX", (0, 0), (-1, -1), 0.75, colors.HexColor("#444444")),
-                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#FAFAFA")),
-                ("TOPPADDING", (0, 0), (-1, -1), 3 * mm),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 3 * mm),
-                ("LEFTPADDING", (0, 0), (-1, -1), 3 * mm),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 3 * mm),
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-            ])
+            TableStyle(
+                [
+                    ("BOX", (0, 0), (-1, -1), 0.75, colors.HexColor("#444444")),
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#FAFAFA")),
+                    ("TOPPADDING", (0, 0), (-1, -1), 3 * mm),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 3 * mm),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 3 * mm),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 3 * mm),
+                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ]
+            )
         )
         story.append(header_table)
     else:
         header_table = Table([[vendor_p, meta_p]], colWidths=[110 * mm, 70 * mm])
         header_table.setStyle(
-            TableStyle([
-                ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 0),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 0),
-                ("TOPPADDING", (0, 0), (-1, -1), 0),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-            ])
+            TableStyle(
+                [
+                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                    ("TOPPADDING", (0, 0), (-1, -1), 0),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ]
+            )
         )
         story.append(header_table)
         if layout == "modern":
             story.append(Spacer(1, 2 * mm))
             story.append(
-                HRFlowable(
-                    width="100%", thickness=2, color=colors.HexColor("#222222"), spaceAfter=2 * mm
-                )
+                HRFlowable(width="100%", thickness=2, color=colors.HexColor("#222222"), spaceAfter=2 * mm)
             )
 
     story.append(Spacer(1, 4 * mm))
@@ -243,14 +265,16 @@ def build_pdf_story(fix: dict, layout: str) -> list:
     buyer_p = Paragraph("<br/>".join(buyer_lines), body_style)
     buyer_table = Table([[buyer_p]], colWidths=[printable_width])
     buyer_table.setStyle(
-        TableStyle([
-            ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
-            ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F8F9FA")),
-            ("TOPPADDING", (0, 0), (-1, -1), 2.5 * mm),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5 * mm),
-            ("LEFTPADDING", (0, 0), (-1, -1), 3 * mm),
-            ("RIGHTPADDING", (0, 0), (-1, -1), 3 * mm),
-        ])
+        TableStyle(
+            [
+                ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#CCCCCC")),
+                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F8F9FA")),
+                ("TOPPADDING", (0, 0), (-1, -1), 2.5 * mm),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2.5 * mm),
+                ("LEFTPADDING", (0, 0), (-1, -1), 3 * mm),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 3 * mm),
+            ]
+        )
     )
     story.append(buyer_table)
     story.append(Spacer(1, 4 * mm))
@@ -293,22 +317,28 @@ def build_pdf_story(fix: dict, layout: str) -> list:
     ]
 
     if layout == "classic":
-        t_style.extend([
-            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#444444")),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EAEAEA")),
-        ])
+        t_style.extend(
+            [
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#444444")),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EAEAEA")),
+            ]
+        )
     elif layout == "modern":
-        t_style.extend([
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EEEEEE")),
-            ("LINEABOVE", (0, 0), (-1, 0), 1.5, colors.HexColor("#222222")),
-            ("LINEBELOW", (0, 0), (-1, 0), 1.5, colors.HexColor("#222222")),
-            ("LINEBELOW", (0, 1), (-1, -1), 0.5, colors.HexColor("#DDDDDD")),
-        ])
+        t_style.extend(
+            [
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#EEEEEE")),
+                ("LINEABOVE", (0, 0), (-1, 0), 1.5, colors.HexColor("#222222")),
+                ("LINEBELOW", (0, 0), (-1, 0), 1.5, colors.HexColor("#222222")),
+                ("LINEBELOW", (0, 1), (-1, -1), 0.5, colors.HexColor("#DDDDDD")),
+            ]
+        )
     elif layout == "compact":
-        t_style.extend([
-            ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#888888")),
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F0F0F0")),
-        ])
+        t_style.extend(
+            [
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.HexColor("#888888")),
+                ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#F0F0F0")),
+            ]
+        )
 
     table.setStyle(TableStyle(t_style))
     story.append(table)
@@ -321,35 +351,45 @@ def build_pdf_story(fix: dict, layout: str) -> list:
 
     totals_rows = []
     if is_tax_incl:
-        totals_rows.append([
-            Paragraph("Total (inclusive of GST)", body_style),
-            Paragraph(f"Rs. {format_indian_number(totals['subtotal'])}", right_style),
-        ])
-        totals_rows.append([
-            Paragraph(
-                "<font color='#555555'><i>"
-                "Includes CGST 2.5% Rs. 1,087.50 and SGST 2.5% Rs. 1,087.50"
-                "</i></font>",
-                body_style,
-            ),
-            Paragraph("", right_style),
-        ])
+        totals_rows.append(
+            [
+                Paragraph("Total (inclusive of GST)", body_style),
+                Paragraph(f"Rs. {format_indian_number(totals['subtotal'])}", right_style),
+            ]
+        )
+        totals_rows.append(
+            [
+                Paragraph(
+                    "<font color='#555555'><i>"
+                    "Includes CGST 2.5% Rs. 1,087.50 and SGST 2.5% Rs. 1,087.50"
+                    "</i></font>",
+                    body_style,
+                ),
+                Paragraph("", right_style),
+            ]
+        )
     else:
-        totals_rows.append([
-            Paragraph("Taxable Value", body_style),
-            Paragraph(f"Rs. {format_indian_number(totals['net_taxable_value'])}", right_style),
-        ])
+        totals_rows.append(
+            [
+                Paragraph("Taxable Value", body_style),
+                Paragraph(f"Rs. {format_indian_number(totals['net_taxable_value'])}", right_style),
+            ]
+        )
 
         # Tax rows
         if fid == "F03":  # Mixed rates
-            totals_rows.append([
-                Paragraph("CGST", body_style),
-                Paragraph(f"Rs. {format_indian_number(totals['cgst'])}", right_style),
-            ])
-            totals_rows.append([
-                Paragraph("SGST", body_style),
-                Paragraph(f"Rs. {format_indian_number(totals['sgst'])}", right_style),
-            ])
+            totals_rows.append(
+                [
+                    Paragraph("CGST", body_style),
+                    Paragraph(f"Rs. {format_indian_number(totals['cgst'])}", right_style),
+                ]
+            )
+            totals_rows.append(
+                [
+                    Paragraph("SGST", body_style),
+                    Paragraph(f"Rs. {format_indian_number(totals['sgst'])}", right_style),
+                ]
+            )
         else:
             cgst = Decimal(str(totals.get("cgst", "0.00")))
             sgst = Decimal(str(totals.get("sgst", "0.00")))
@@ -357,41 +397,53 @@ def build_pdf_story(fix: dict, layout: str) -> list:
 
             if igst > 0:
                 first_line_tax = fix.get("line_items", [{}])[0].get("tax_rate_percent", "18")
-                totals_rows.append([
-                    Paragraph(f"IGST @ {first_line_tax}%", body_style),
-                    Paragraph(f"Rs. {format_indian_number(igst)}", right_style),
-                ])
+                totals_rows.append(
+                    [
+                        Paragraph(f"IGST @ {first_line_tax}%", body_style),
+                        Paragraph(f"Rs. {format_indian_number(igst)}", right_style),
+                    ]
+                )
             else:
                 first_line_tax = Decimal(str(fix.get("line_items", [{}])[0].get("tax_rate_percent", "18")))
                 half_rate = f"{first_line_tax / 2:.1f}".rstrip("0").rstrip(".")
-                totals_rows.append([
-                    Paragraph(f"CGST @ {half_rate}%", body_style),
-                    Paragraph(f"Rs. {format_indian_number(cgst)}", right_style),
-                ])
-                totals_rows.append([
-                    Paragraph(f"SGST @ {half_rate}%", body_style),
-                    Paragraph(f"Rs. {format_indian_number(sgst)}", right_style),
-                ])
+                totals_rows.append(
+                    [
+                        Paragraph(f"CGST @ {half_rate}%", body_style),
+                        Paragraph(f"Rs. {format_indian_number(cgst)}", right_style),
+                    ]
+                )
+                totals_rows.append(
+                    [
+                        Paragraph(f"SGST @ {half_rate}%", body_style),
+                        Paragraph(f"Rs. {format_indian_number(sgst)}", right_style),
+                    ]
+                )
 
-        totals_rows.append([
-            Paragraph("Total Tax", body_style),
-            Paragraph(f"Rs. {format_indian_number(totals['total_tax'])}", right_style),
-        ])
+        totals_rows.append(
+            [
+                Paragraph("Total Tax", body_style),
+                Paragraph(f"Rs. {format_indian_number(totals['total_tax'])}", right_style),
+            ]
+        )
 
-    totals_rows.append([
-        Paragraph("<b>Grand Total</b>", body_bold),
-        Paragraph(f"<b>Rs. {format_indian_number(totals['grand_total'])}</b>", right_bold),
-    ])
+    totals_rows.append(
+        [
+            Paragraph("<b>Grand Total</b>", body_bold),
+            Paragraph(f"<b>Rs. {format_indian_number(totals['grand_total'])}</b>", right_bold),
+        ]
+    )
 
     totals_table = Table(totals_rows, colWidths=[90 * mm, 40 * mm], hAlign="RIGHT")
     totals_table.setStyle(
-        TableStyle([
-            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-            ("TOPPADDING", (0, 0), (-1, -1), 1.2 * mm),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 1.2 * mm),
-            ("LINEABOVE", (0, -1), (-1, -1), 1, colors.HexColor("#222222")),
-            ("LINEBELOW", (0, -1), (-1, -1), 1.5, colors.HexColor("#222222")),
-        ])
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("TOPPADDING", (0, 0), (-1, -1), 1.2 * mm),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 1.2 * mm),
+                ("LINEABOVE", (0, -1), (-1, -1), 1, colors.HexColor("#222222")),
+                ("LINEBELOW", (0, -1), (-1, -1), 1.5, colors.HexColor("#222222")),
+            ]
+        )
     )
     story.append(totals_table)
     story.append(Spacer(1, 3 * mm))
@@ -413,14 +465,16 @@ def build_pdf_story(fix: dict, layout: str) -> list:
         bank_p = Paragraph("<br/>".join(bank_lines), body_style)
         bank_table = Table([[bank_p]], colWidths=[printable_width])
         bank_table.setStyle(
-            TableStyle([
-                ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#777777")),
-                ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F9F9F9")),
-                ("TOPPADDING", (0, 0), (-1, -1), 2 * mm),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 2 * mm),
-                ("LEFTPADDING", (0, 0), (-1, -1), 2.5 * mm),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 2.5 * mm),
-            ])
+            TableStyle(
+                [
+                    ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#777777")),
+                    ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#F9F9F9")),
+                    ("TOPPADDING", (0, 0), (-1, -1), 2 * mm),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 2 * mm),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 2.5 * mm),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 2.5 * mm),
+                ]
+            )
         )
         story.append(bank_table)
         story.append(Spacer(1, 3 * mm))
@@ -437,14 +491,16 @@ def build_pdf_story(fix: dict, layout: str) -> list:
         box_color = colors.HexColor("#E53E3E") if fid == "F05" else colors.HexColor("#999999")
         bg_color = colors.HexColor("#FFF5F5") if fid == "F05" else colors.HexColor("#FAFAFA")
         note_table.setStyle(
-            TableStyle([
-                ("BOX", (0, 0), (-1, -1), 0.75, box_color),
-                ("BACKGROUND", (0, 0), (-1, -1), bg_color),
-                ("TOPPADDING", (0, 0), (-1, -1), 2 * mm),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 2 * mm),
-                ("LEFTPADDING", (0, 0), (-1, -1), 2.5 * mm),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 2.5 * mm),
-            ])
+            TableStyle(
+                [
+                    ("BOX", (0, 0), (-1, -1), 0.75, box_color),
+                    ("BACKGROUND", (0, 0), (-1, -1), bg_color),
+                    ("TOPPADDING", (0, 0), (-1, -1), 2 * mm),
+                    ("BOTTOMPADDING", (0, 0), (-1, -1), 2 * mm),
+                    ("LEFTPADDING", (0, 0), (-1, -1), 2.5 * mm),
+                    ("RIGHTPADDING", (0, 0), (-1, -1), 2.5 * mm),
+                ]
+            )
         )
         story.append(note_table)
         story.append(Spacer(1, 3 * mm))
@@ -458,11 +514,13 @@ def build_pdf_story(fix: dict, layout: str) -> list:
     sig_p = Paragraph("<br/>".join(sig_lines), right_style)
     sig_table = Table([[sig_p]], colWidths=[printable_width])
     sig_table.setStyle(
-        TableStyle([
-            ("ALIGN", (0, 0), (-1, -1), "RIGHT"),
-            ("TOPPADDING", (0, 0), (-1, -1), 2 * mm),
-            ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
-        ])
+        TableStyle(
+            [
+                ("ALIGN", (0, 0), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 2 * mm),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+            ]
+        )
     )
     story.append(sig_table)
 
@@ -556,9 +614,7 @@ def generate_golden_json(fix: dict, out_json_path: Path):
         qty = Decimal(str(l_item["quantity"])) if l_item.get("quantity") is not None else None
         u_price = Decimal(str(l_item["unit_price"])) if l_item.get("unit_price") is not None else None
         t_rate = (
-            Decimal(str(l_item["tax_rate_percent"]))
-            if l_item.get("tax_rate_percent") is not None
-            else None
+            Decimal(str(l_item["tax_rate_percent"])) if l_item.get("tax_rate_percent") is not None else None
         )
         l_amt = Decimal(str(l_item["line_amount"])) if l_item.get("line_amount") is not None else None
 

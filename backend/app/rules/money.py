@@ -58,4 +58,8 @@ def format_rupees(val: Decimal | float | int | None) -> str:
     """Format rupee Decimal as decimal string with 2 dp, e.g. '129682.00'."""
     if val is None:
         return "0.00"
-    return f"{quantize_money(val):.2f}"
+    dec = quantize_money(val)
+    return str(dec)
+
+
+format_money = format_rupees

@@ -125,11 +125,7 @@ def list_purchase_orders(db: Session = Depends(get_db)):
         else:
             billing_state = "OVERBILLED"
 
-        pct = (
-            round((total_billed_paise / total_ordered_paise) * 100, 1)
-            if total_ordered_paise > 0
-            else 0.0
-        )
+        pct = round((total_billed_paise / total_ordered_paise) * 100, 1) if total_ordered_paise > 0 else 0.0
 
         out.append(
             PurchaseOrderOut(
@@ -198,17 +194,11 @@ def get_purchase_order(po_number: str, db: Session = Depends(get_db)):
     else:
         billing_state = "OVERBILLED"
 
-    pct = (
-        round((total_billed_paise / total_ordered_paise) * 100, 1)
-        if total_ordered_paise > 0
-        else 0.0
-    )
+    pct = round((total_billed_paise / total_ordered_paise) * 100, 1) if total_ordered_paise > 0 else 0.0
 
     # Invoices in ledger for this PO
     invoices_stmt = (
-        select(InvoiceLedger)
-        .where(InvoiceLedger.po_number == po_number)
-        .order_by(InvoiceLedger.id)
+        select(InvoiceLedger).where(InvoiceLedger.po_number == po_number).order_by(InvoiceLedger.id)
     )
     invoices = db.execute(invoices_stmt).scalars().all()
     invoices_out = [
