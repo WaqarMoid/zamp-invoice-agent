@@ -10,11 +10,11 @@
 
 ## 1. What It Does
 
-Kestrel AP is an automated Accounts Payable invoice processing system built for **Kestrel Foods Pvt. Ltd.** (Bengaluru, Karnataka, GST State 29). It ingests multi-page vendor invoice PDFs, extracts structured data using layout-aware multimodal AI, performs 2-way PO matching and 21 deterministic reconciliation checks, and outputs an explainable decision with real-time execution streaming:
+Kestrel AP is an automated Accounts Payable invoice processing system built for **Kestrel Foods Pvt. Ltd.** (Bengaluru, Karnataka, GST State 29). It ingests multi-page vendor invoice PDFs, extracts structured data using layout-aware multimodal AI, performs 2-way PO matching and 19 deterministic reconciliation checks, and outputs an explainable decision with real-time execution streaming:
 - **`APPROVE`**: Line items, quantities, pricing, and GST match open POs within tolerance. Automatically commits to the purchase ledger and schedules payment.
 - **`REVIEW`**: Discrepancies detected (split PO quantity overruns, unbilled services, price variances). Generates an actionable AP review packet and drafted vendor correction email.
 - **`HOLD`**: Fraud quarantine triggered when remittance bank accounts differ from vendor master. Halts payment and blocks email communication until out-of-band phone verification is confirmed.
-- **`REJECT`**: Hard commercial invalidity (duplicate invoices via number normalization or near-duplicate windows, buyer GSTIN mismatch, stale invoices > 365 days).
+- **`REJECT`**: Hard commercial invalidity (duplicate invoices via number normalization, buyer GSTIN mismatch, inactive vendor, closed PO).
 
 > **Architectural Principle:** The LLM (Gemini 3.5 Flash Lite) is used **strictly as a perceptual parser** emitting typed JSON with field confidence scores. **Deterministic Python code makes 100% of the business and financial decisions.**
 
@@ -49,13 +49,13 @@ flowchart TD
 |---|---|---|---|
 | **F01** | Standard Invoice | 3 lines, different wording vs PO, clean totals | **APPROVE**: Greedy line matching pairs items; PO marked 100% billed. |
 | **F02** | Split PO Overrun | Framework PO for 50 trips; 40 already billed; bills 14 | **REVIEW**: Ledger-wide consumption detects 4-trip overage. Recommends paying 10 and requesting a credit note. |
-| **F03** | 200 DPI Scanned Image | 0 text characters, missing PO number, 2 open candidate POs | **REVIEW**: Vision OCR extracts table; candidate inference scores PO-2026-0881. Inferred POs never auto-pay. |
-| **F04** | Duplicate Resubmission | Prior invoice reformatted (`/` to `-`) and re-dated | **REJECT**: Token normalization catches duplicate invoice SPS/26-27/0512. |
+| **F03** | 200 DPI Scanned Image | 0 text characters, missing PO number, 2 open candidate POs | **REVIEW**: Vision OCR extracts table; candidate inference scores PO-2026-0431. Inferred POs never auto-pay. |
+| **F04** | Duplicate Resubmission | Prior invoice reformatted (`BIS-INV-2026-0089` resent as `BIS/INV/26/89`) and re-dated | **REJECT**: Token normalization catches it as a duplicate of ledger invoice BIS-INV-2026-0089. |
 | **F05** | Bank Change Fraud | All numbers & line items perfect; bank account changed | **HOLD**: Flags bank mismatch. Blocks automated email reply; requires phone callback. |
 | **F06** | Partial Invoice | Bills 10 trips within balance on framework PO | **APPROVE**: Successfully consumes balance without overrunning. |
 | **F07** | GST-Inclusive Pricing | Unit prices printed inclusive of 5% GST | **APPROVE**: Back-calculates net values to prevent false price variance alarms. |
-| **F08** | Inactive Vendor / Closed PO | Vendor marked inactive; PO closed | **REJECT**: Immediate termination with vendor notification draft. |
-| **F09** | Stale Invoice | Invoice date older than 365 days | **REJECT**: Flags non-compliant tax period under company policy. |
+| **F08** | Inactive Vendor / Closed PO | Vendor deactivated 2026-09-30; PO-2026-0377 closed | **REJECT**: Two independent reject reasons (C05 inactive vendor, C12 closed PO). |
+| **F09** | Missing Mandatory Fields | Invoice number and invoice date both blank | **REVIEW**: C01 flags the gaps; duplicate matching degrades to amount-and-vendor only. Drafts a vendor email requesting a corrected tax invoice. |
 
 ---
 

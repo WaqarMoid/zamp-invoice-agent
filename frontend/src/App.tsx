@@ -33,7 +33,9 @@ export const App: React.FC = () => {
               <Route path="runs/:id" element={<RunDetailPage />} />
               <Route path="purchase-orders" element={<PurchaseOrdersPage />} />
               <Route path="rules" element={<RulesPage />} />
-              <Route path="__gallery" element={<Gallery />} />
+              {import.meta.env.DEV && (
+                <Route path="__gallery" element={<Gallery />} />
+              )}
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
