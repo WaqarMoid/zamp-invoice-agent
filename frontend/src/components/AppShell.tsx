@@ -101,10 +101,10 @@ export const AppShell: React.FC = () => {
               <span
                 className={`w-2 h-2 rounded-full ${
                   serverStatus === "live"
-                    ? "bg-[#1B6B43]"
+                    ? "bg-[var(--approve)]"
                     : serverStatus === "waking"
-                    ? "bg-[#8A5A00] animate-pulse"
-                    : "bg-[#A3182A]"
+                    ? "bg-[var(--review)] animate-pulse"
+                    : "bg-[var(--reject)]"
                 }`}
               />
               <span className="hidden sm:inline">

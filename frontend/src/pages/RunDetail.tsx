@@ -69,6 +69,52 @@ export const RunDetailPage: React.FC = () => {
     }
   }, [liveEventLog, activeTab]);
 
+  // Keyboard navigation: j/k to navigate stages, Escape to close drawer
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      if (e.key === "Escape" && drawerOpen) {
+        setDrawerOpen(false);
+      } else if (e.key === "j" || e.key === "ArrowDown") {
+        const stageKeys: StageKey[] = [
+          "ingest",
+          "extract",
+          "normalize",
+          "vendor",
+          "duplicates",
+          "po_match",
+          "reconcile",
+          "decide",
+        ];
+        const idx = stageKeys.indexOf(selectedStageKey);
+        if (idx !== -1 && idx < stageKeys.length - 1) {
+          setSelectedStageKey(stageKeys[idx + 1]);
+          setUserSelectedStage(true);
+        }
+      } else if (e.key === "k" || e.key === "ArrowUp") {
+        const stageKeys: StageKey[] = [
+          "ingest",
+          "extract",
+          "normalize",
+          "vendor",
+          "duplicates",
+          "po_match",
+          "reconcile",
+          "decide",
+        ];
+        const idx = stageKeys.indexOf(selectedStageKey);
+        if (idx > 0) {
+          setSelectedStageKey(stageKeys[idx - 1]);
+          setUserSelectedStage(true);
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedStageKey, drawerOpen]);
+
   if (isLoading) {
     return (
       <div className="space-y-6">

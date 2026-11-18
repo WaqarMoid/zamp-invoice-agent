@@ -1,17 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Button } from "../components/Button";
 
 export const NotFoundPage: React.FC = () => {
   return (
-    <div className="py-16 text-center">
-      <h1 className="text-4xl font-bold font-display text-slate-900">404</h1>
-      <p className="mt-2 text-slate-600">Page not found.</p>
-      <div className="mt-6">
-        <Link
-          to="/"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700"
-        >
-          Return to Dashboard
+    <div className="py-20 text-center max-w-md mx-auto space-y-4">
+      <span className="font-heading font-semibold text-[11px] uppercase tracking-[0.08em] text-[var(--ink-3)] select-none">
+        404 ERROR
+      </span>
+      <h1 className="font-heading font-bold text-[32px] leading-[40px] text-[var(--ink)]">
+        Page not found
+      </h1>
+      <p className="font-sans text-[15px] leading-[24px] text-[var(--ink-2)]">
+        The page you are looking for does not exist or has been moved.
+      </p>
+      <div className="pt-2">
+        <Link to="/">
+          <Button variant="primary">Return to Invoices</Button>
         </Link>
       </div>
     </div>

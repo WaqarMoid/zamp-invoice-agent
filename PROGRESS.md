@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6f Rules
-- **Next action:** Implement `/rules` with decision taxonomy, full C01..C21 check catalogue, system thresholds from `/api/config`, and demo data reset dialog.
+- **Current phase:** P6g Responsive, a11y, polish
+- **Next action:** Verify responsive breakpoints (390px, 640px, 1024px, 1280px), keyboard shortcuts, a11y focus rings, 404 page, and complete Phase 6 acceptance checklist.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -20,7 +20,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P6c Process invoice
 - [x] P6d Run detail live view
 - [x] P6e Purchase orders
-- [ ] P6f Rules
+- [x] P6f Rules
 - [ ] P6g Responsive, a11y, polish
 - [ ] P7 Hardening
 - [ ] P8 Deploy
@@ -197,6 +197,18 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `npm --prefix frontend run build` clean build in 3.26s.
 - Commit: 62baab4
 - Notes for next phase: Proceed with Phase 6f Rules (`/rules`).
+
+### P6f Rules — done
+- Built:
+  - Rules and policy reference page: `frontend/src/pages/Rules.tsx` at `/rules`.
+  - How decisions are made section: decision taxonomy with badges, explanation copy, and strict precedence rule ("Reject outranks Hold, Hold outranks Review").
+  - Complete automated check catalogue table for all 21 checks (C01 through C21) with stage categorization, route-to badges, and policy descriptions.
+  - System thresholds grid populated dynamically from `/api/config`.
+  - Demo data management card with guarded confirmation modal requiring typing `RESET`.
+- Verified:
+  - `npm --prefix frontend run build` clean build in 3.38s.
+- Commit: 0b0aa41
+- Notes for next phase: Proceed with Phase 6g Responsive, a11y, polish.
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
