@@ -3,9 +3,12 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P8 Deploy
-- **Next action:** Deploy to GitHub (WaqarMoid/zamp-invoice-agent), Neon Postgres, Render backend, and Vercel frontend per docs/11.
-- **Live URLs:** frontend: _tbd_ · backend: _tbd_
+- **Current phase:** P9 Demo prep & Final Handover — COMPLETE
+- **Next action:** Ready for review, screen recording, and live interview!
+- **Live URLs:**
+  - Frontend: https://zamp-invoice-agent.vercel.app
+  - Backend: https://zamp-invoice-agent-api.onrender.com
+  - Database: Neon Postgres (Singapore, AWS `ap-southeast-1`, pooled connection)
 - **LLM model in use:** gemini-3.5-flash-lite
 
 ## Phase checklist
@@ -23,9 +26,9 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P6f Rules
 - [x] P6g Responsive, a11y, polish
 - [x] P7 Hardening
-- [ ] P8 Deploy
-- [ ] P9 Demo prep
-- [ ] README rewritten for reviewers
+- [x] P8 Deploy
+- [x] P9 Demo prep
+- [x] README rewritten for reviewers
 
 ## Phase log
 ### P0 Bootstrap — done
@@ -236,31 +239,51 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - Commit: dbc24a4
 - Notes for next phase: Proceed with Phase 8 Deploy per docs/11.
 
-### P8 Deploy — in progress
+### P8 Deploy — done
 - Built & Configured:
   - Neon Postgres:
     - Initialized and deployed on branch `production`, project `icy-base-13087517` (`org-raspy-salad-99586801`) in AWS Asia Pacific Singapore (`ap-southeast-1`).
     - Pooled connection string (`ep-broad-dream-b3wgiz0h-pooler.c-4.ap-southeast-1.aws.neon.tech`) configured and pulled into `.env.local`.
     - Wired `backend/app/db.py` to auto-normalize `postgres://` and `postgresql://` connection strings to `postgresql+psycopg://` using `psycopg 3.3.9`.
     - Initialized all database tables and seeded 6 master vendors, 8 purchase orders, and 3 approved ledger rows directly into Neon Postgres.
-  - Root workspace build script:
-    - Added root `package.json` with `"build": "npm --prefix frontend run build"`.
-  - GitHub:
-    - Synced and up to date at `https://github.com/WaqarMoid/zamp-invoice-agent`.
+  - Render API Backend:
+    - Web service `zamp-invoice-agent-api` deployed via Blueprint at `https://zamp-invoice-agent-api.onrender.com`.
+    - Configured with `gemini-3.5-flash-lite`, Neon pooled `DATABASE_URL`, and auto-deploy on push to `main`.
+    - Updated CORS `ALLOWED_ORIGINS` to `https://zamp-invoice-agent.vercel.app,http://localhost:5173`.
+  - Vercel Frontend:
+    - Deployed from repository `frontend` root at `https://zamp-invoice-agent.vercel.app`.
+    - Injected `VITE_API_BASE_URL=https://zamp-invoice-agent-api.onrender.com`.
+    - Production build passing cleanly in Vite.
+  - Production Acceptance (§11.5):
+    - Automated acceptance script `backend/scripts/verify_production.py` executed live against production endpoints.
+    - Health check: `{"status":"ok","db":"ok","llm_configured":true,"model":"gemini-3.5-flash-lite","version":"67e3a6d"}`.
+    - Live F01 -> APPROVE, F02 -> REVIEW, F05 -> HOLD, F04 -> REJECT.
+    - Scanned invoice F03 executed with cache off in production -> PyMuPDF vision rasterization and Gemini multimodal reading succeeded with REVIEW.
+    - Re-run F01 duplicate rejection confirmed.
+    - All 36 SSE events streamed live per run.
 - Verified:
-  - Neon Postgres live connection: `SELECT version()` returned `PostgreSQL 18.7 (a21afb5) on aarch64-unknown-linux-gnu`.
-  - Neon database counts: 6 vendors, 8 POs, 3 ledger invoices.
-  - `npm run build` passed cleanly in 4.46s from root.
-  - `pytest backend/tests` against live Neon Postgres: 69/69 tests passed in 10.86s.
-  - `npm --prefix frontend run test`: 11/11 Vitest tests passed in 1.48s.
-  - `ruff check backend`: clean, 0 errors.
-- Commit: fa0062c
-- Next steps: Deploy Render backend Blueprint and Vercel frontend.
+  - `python backend/scripts/verify_production.py` -> 100% passed on all acceptance checks.
+- Commit: fa0062c, 67e3a6d
+
+### P9 Demo prep — done
+- Built & Rehearsed:
+  - Rehearsed complete live demo flow against production URLs: `https://zamp-invoice-agent.vercel.app`.
+  - Created `DEMO_CHECKLIST.md` with:
+    - Pre-recording checklist (waking server, resetting demo data, pre-warming cache).
+    - 5-minute target timing script (0:00 to 5:00) with exact talking points for Waqar's voice recording.
+    - Live interview run order (F01 -> F02 -> interactive AP approval to show overbilling -> F05 -> F03 -> F04 -> duplicate re-run).
+    - Interviewer Q&A reference answers drawn directly from the implementation architecture.
+  - Pre-warmed extraction cache for F02, F03, F04, F05 on production database.
+  - Executed clean `POST /api/admin/reset` with `confirm: "RESET"` so reviewer starts on a clean slate.
+  - Rewrote `README.md` (<120 lines) with live links, process map flowchart, edge case table, assumptions, test instructions, and next steps.
 
 ## Handoff notes (for a fresh session with empty context)
-- P0 through P7 are complete and 100% verified.
-- P8 Neon Postgres is fully provisioned, seeded, and verified passing 69/69 backend tests.
-- Next step: Waqar applies Render Blueprint with `DATABASE_URL` (pooled Neon string) and `GEMINI_API_KEY`, deploys Vercel frontend, and shares the live URLs.
+- All phases P0 through P9 are 100% complete, hardened, tested, deployed, and demo-ready.
+- Frontend: https://zamp-invoice-agent.vercel.app
+- Backend: https://zamp-invoice-agent-api.onrender.com
+- Database: Neon Postgres (Singapore, pooled)
+- All 69 backend tests and 11 frontend tests pass.
+- Demo guide and talking points are fully detailed in `DEMO_CHECKLIST.md`.
 
 ## Deviations log
 - **Model selection**: Switched default LLM from `gemini-2.5-flash` to `gemini-3.5-flash-lite`. Gemini Developer API Free Tier capped `gemini-2.5-flash` at 20 requests per day (`RESOURCE_EXHAUSTED`). `gemini-3.5-flash-lite` provides high free-tier limits, fast response times (2-4s), and achieved 100% extraction accuracy on both text and vision/scanned invoices.
@@ -269,25 +292,5 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - **Seed wipe order**: Corrected deletion sequence in `seed(db, force=True)` to delete `LedgerLine` and `InvoiceLedger` before `Run` to satisfy SQLite foreign key constraints.
 
 ## Waiting on Waqar (HUMAN steps)
-1. **Render Backend**:
-   - Go to [dashboard.render.com](https://dashboard.render.com) -> **New +** -> **Blueprint**.
-   - Select `WaqarMoid/zamp-invoice-agent` -> **Apply**.
-   - Fill secrets in Render:
-     - `DATABASE_URL`: Your Neon **pooled** connection string (from Neon console -> project `icy-base-13087517` -> Connection Details -> select "Connection pooling" -> copy URL).
-     - `GEMINI_API_KEY`: Your Gemini API key from Google AI Studio.
-     - `ALLOWED_ORIGINS`: `http://localhost:5173` (temporary until step 3).
-   - Wait for deploy; test `https://<service>.onrender.com/api/health` -> returns `{"status":"ok"}`.
-   - Note your Render backend URL.
-
-2. **Vercel Frontend**:
-   - Go to [vercel.com](https://vercel.com) -> **Add New...** -> **Project** -> import `WaqarMoid/zamp-invoice-agent`.
-   - Root Directory: `frontend`. Framework: Vite.
-   - Environment Variable: `VITE_API_BASE_URL` = your Render URL from step 1 (no trailing slash).
-   - Click **Deploy** and note your Vercel URL.
-
-3. **Link CORS on Render**:
-   - Back in Render -> `zamp-invoice-agent-api` -> **Environment**.
-   - Set `ALLOWED_ORIGINS` = `https://<your-app>.vercel.app,http://localhost:5173` -> **Save Changes**.
-
-4. **Tell agent in chat**:
-   - Reply with both live URLs (Render and Vercel) once deployed so I can run production verification (§11.5), execute the demo rehearsal script, and rewrite `README.md`.
+- None! The entire app is deployed, verified live, and demo-ready.
+- Waqar can now record his 5-minute video using [`DEMO_CHECKLIST.md`](./DEMO_CHECKLIST.md) and submit the project.
