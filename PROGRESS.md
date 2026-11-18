@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6e Purchase orders
-- **Next action:** Implement `/purchase-orders` with cumulative consumption bars, line breakdown, invoice history against PO, and vendors master card.
+- **Current phase:** P6f Rules
+- **Next action:** Implement `/rules` with decision taxonomy, full C01..C21 check catalogue, system thresholds from `/api/config`, and demo data reset dialog.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -19,7 +19,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P6b Dashboard
 - [x] P6c Process invoice
 - [x] P6d Run detail live view
-- [ ] P6e Purchase orders
+- [x] P6e Purchase orders
 - [ ] P6f Rules
 - [ ] P6g Responsive, a11y, polish
 - [ ] P7 Hardening
@@ -186,6 +186,17 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `npm --prefix frontend run build` clean build in 3.23s.
 - Commit: 05c965f
 - Notes for next phase: Proceed with Phase 6e Purchase orders (`/purchase-orders`).
+
+### P6e Purchase orders — done
+- Built:
+  - Purchase orders page: `frontend/src/pages/PurchaseOrders.tsx` at `/purchase-orders`.
+  - Open commitments table with cumulative ConsumptionBars (160 px), open/closed status indicator, and net rupee values.
+  - Interactive row expansion revealing detailed line breakdown (ordered, billed, remaining, unit price, tax rate) and linked invoice billing history.
+  - Master vendor registry card displaying active/inactive status, legal name, GSTIN, masked bank account numbers, and credit terms.
+- Verified:
+  - `npm --prefix frontend run build` clean build in 3.26s.
+- Commit: 62baab4
+- Notes for next phase: Proceed with Phase 6f Rules (`/rules`).
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
