@@ -248,4 +248,25 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - **Seed wipe order**: Corrected deletion sequence in `seed(db, force=True)` to delete `LedgerLine` and `InvoiceLedger` before `Run` to satisfy SQLite foreign key constraints.
 
 ## Waiting on Waqar (HUMAN steps)
-<!-- None at this time. All API keys and environment configurations are in place. -->
+1. **Neon Postgres**:
+   - Sign in at [neon.tech](https://neon.tech) -> New Project named `zamp-invoice-agent`.
+   - Region: **AWS Asia Pacific (Singapore)**, Postgres 16.
+   - Copy the **pooled** connection string (`postgresql://...-pooler...?sslmode=require`). Keep it for step 2 (do not paste secrets in chat).
+2. **Render Backend**:
+   - Go to [dashboard.render.com](https://dashboard.render.com) -> **New +** -> **Blueprint**.
+   - Select `WaqarMoid/zamp-invoice-agent` -> **Apply**.
+   - Fill secrets in Render:
+     - `DATABASE_URL`: Neon pooled connection string from step 1.
+     - `GEMINI_API_KEY`: your Gemini API key from AI Studio.
+     - `ALLOWED_ORIGINS`: `http://localhost:5173` (temporary until step 4).
+   - Wait for deploy; test `https://<service>.onrender.com/api/health` -> returns `{"status":"ok"}`.
+   - Note your Render backend URL.
+3. **Vercel Frontend**:
+   - Go to [vercel.com](https://vercel.com) -> **Add New...** -> **Project** -> import `WaqarMoid/zamp-invoice-agent`.
+   - Root Directory: `frontend`. Framework: Vite.
+   - Environment Variable: `VITE_API_BASE_URL` = your Render URL from step 2 (no trailing slash).
+   - Click **Deploy** and note your Vercel URL.
+4. **Link CORS on Render**:
+   - Back in Render -> `zamp-invoice-agent-api` -> **Environment**.
+   - Set `ALLOWED_ORIGINS` = `https://<your-app>.vercel.app,http://localhost:5173` -> **Save Changes**.
+5. **Tell agent in chat**: Reply with both live URLs (Render and Vercel) so I can verify production, run the demo rehearsals, and rewrite `README.md`.
