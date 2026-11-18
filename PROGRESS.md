@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P7 Hardening
-- **Next action:** Execute full test suites (pytest backend, vitest frontend unit tests, e2e smoke verification) and verify production readiness per docs/10.
+- **Current phase:** P8 Deploy
+- **Next action:** Deploy to GitHub (WaqarMoid/zamp-invoice-agent), Neon Postgres, Render backend, and Vercel frontend per docs/11.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -22,7 +22,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P6e Purchase orders
 - [x] P6f Rules
 - [x] P6g Responsive, a11y, polish
-- [ ] P7 Hardening
+- [x] P7 Hardening
 - [ ] P8 Deploy
 - [ ] P9 Demo prep
 - [ ] README rewritten for reviewers
@@ -221,6 +221,20 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `npm --prefix frontend run build` clean build in 3.05s.
 - Commit: 810876c
 - Notes for next phase: Proceed with Phase 7 Hardening per doc 10.
+
+### P7 Hardening — done
+- Built:
+  - Frontend unit test suite: `frontend/src/tests/format.test.ts` (10 tests covering INR money, compact lakh/crore formatting, ISO dates, relative times, and durations).
+  - Stream reducer idempotency test: `frontend/src/tests/stream_reducer.test.ts` (verified deduplication and out-of-order event resilience).
+  - Playwright end-to-end smoke test spec: `frontend/e2e/smoke.spec.ts` (F01 happy path to Approved, F05 fraud alert to On hold with phone verification callout).
+  - Dedicated configuration for test runners: `frontend/vitest.config.ts` and `frontend/playwright.config.ts`.
+- Verified:
+  - `npm --prefix frontend run test` (11/11 Vitest tests passed in 512ms).
+  - `backend/.venv/Scripts/pytest backend/tests` (69/69 Pytest tests passed in 7.25s).
+  - `backend/.venv/Scripts/ruff check backend` (clean, 0 errors).
+  - `npm --prefix frontend run build` (clean production build in 3.43s).
+- Commit: dbc24a4
+- Notes for next phase: Proceed with Phase 8 Deploy per docs/11.
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
