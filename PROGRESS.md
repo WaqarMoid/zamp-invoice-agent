@@ -109,7 +109,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `backend/reports/golden_results.md` generated with full status matrix.
   - `backend/.venv/Scripts/ruff check backend` (clean, 0 errors).
   - `backend/.venv/Scripts/pytest` (all 64 tests passed in 6.07s).
-- Commit: (recorded below)
+- Commit: 5f937be
 - Notes for next phase: Proceed with Phase 5 API & streaming.
 
 ### P5 API & streaming — in progress
