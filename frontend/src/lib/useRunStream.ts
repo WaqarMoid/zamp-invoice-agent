@@ -65,7 +65,9 @@ export function useRunStream(runId: string | undefined) {
       }, 100);
 
       // Connect to SSE
-      const sseUrl = `${import.meta.env.VITE_API_URL || ""}/api/runs/${runId}/events`;
+      const apiBase =
+        import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || "";
+      const sseUrl = `${apiBase}/api/runs/${runId}/events`;
       const es = new EventSource(sseUrl);
       eventSourceRef.current = es;
 
