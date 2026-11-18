@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6b Dashboard
-- **Next action:** Implement Dashboard page at `/` with KPI strip, status filters, search, runs table, live polling, and process invoice CTA.
+- **Current phase:** P6c Process invoice
+- **Next action:** Implement `/new` page with file upload dropzone, cache toggle, grouped sample invoice catalog with preview dialog and run trigger.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -16,7 +16,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P4 Pipeline & rules
 - [x] P5 API & streaming
 - [x] P6a Tokens, fonts, shell, components
-- [ ] P6b Dashboard
+- [x] P6b Dashboard
 - [ ] P6c Process invoice
 - [ ] P6d Run detail live view
 - [ ] P6e Purchase orders
@@ -147,6 +147,19 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - All self-hosted font bundles generated and verified.
 - Commit: 5bf05bb
 - Notes for next phase: Proceed with Phase 6b Dashboard (`/`).
+
+### P6b Dashboard — done
+- Built:
+  - Dashboard page: `frontend/src/pages/Dashboard.tsx` at `/`.
+  - Single-card 5-column KPI strip (Processed, Auto-approved, Awaiting action, Value processed, Median time) with matching typography tokens, lining figures, and responsive layout.
+  - Segmented status filters (All, Approved, Needs review, On hold, Rejected) with real-time counts, URL query parameter synchronization, and 240px search input.
+  - Runs data table with relative timestamps, mono invoice/PO identifiers, inferred badge, money formatting, decision badges, cleaned headline reasons, durations, and AP review statuses.
+  - Dynamic polling (2 s when active runs exist, 15 s when idle).
+  - Empty states and loading skeletons.
+- Verified:
+  - `npm --prefix frontend run build` clean build in 3.40s.
+- Commit: a2281c2
+- Notes for next phase: Proceed with Phase 6c Process invoice (`/new`).
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
