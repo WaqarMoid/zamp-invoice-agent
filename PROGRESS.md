@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6c Process invoice
-- **Next action:** Implement `/new` page with file upload dropzone, cache toggle, grouped sample invoice catalog with preview dialog and run trigger.
+- **Current phase:** P6d Run detail live view
+- **Next action:** Implement `/runs/:id` with real-time SSE streaming, 300ms pacing, stage markers & cards, decision panel, human review modal, email draft modal, and document drawer.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -17,7 +17,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P5 API & streaming
 - [x] P6a Tokens, fonts, shell, components
 - [x] P6b Dashboard
-- [ ] P6c Process invoice
+- [x] P6c Process invoice
 - [ ] P6d Run detail live view
 - [ ] P6e Purchase orders
 - [ ] P6f Rules
@@ -160,6 +160,17 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `npm --prefix frontend run build` clean build in 3.40s.
 - Commit: a2281c2
 - Notes for next phase: Proceed with Phase 6c Process invoice (`/new`).
+
+### P6c Process invoice — done
+- Built:
+  - Process invoice page: `frontend/src/pages/NewRun.tsx` at `/new` with `/runs/new` redirect.
+  - Two-column responsive layout (7/5 grid on desktop, stacked on mobile).
+  - Drag-and-drop file upload with format and 10 MB size validation, instant run initiation, and cache toggle checkbox.
+  - Grouped sample invoices list (Happy path, Edge cases, More scenarios) with expected decision badges, descriptions, run trigger, and 720px iframe PDF preview dialog.
+- Verified:
+  - `npm --prefix frontend run build` clean build in 3.09s.
+- Commit: 7d6f1f8
+- Notes for next phase: Proceed with Phase 6d Run detail live view (`/runs/:id`).
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
