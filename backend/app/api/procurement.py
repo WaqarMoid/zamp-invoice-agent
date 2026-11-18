@@ -111,6 +111,7 @@ def list_purchase_orders(db: Session = Depends(get_db)):
                     quantity=format_qty(ordered_qty),
                     unit_price=format_rupees(unit_price_dec),
                     tax_rate=format_rate(line.tax_rate),
+                    tax_rate_percent=format_rate(line.tax_rate),
                     billed_quantity=format_qty(billed_qty),
                     remaining_quantity=format_qty(rem_qty),
                 )
@@ -126,6 +127,8 @@ def list_purchase_orders(db: Session = Depends(get_db)):
             billing_state = "OVERBILLED"
 
         pct = round((total_billed_paise / total_ordered_paise) * 100, 1) if total_ordered_paise > 0 else 0.0
+        net_val_str = format_rupees(from_paise(total_ordered_paise))
+        billed_net_val_str = format_rupees(from_paise(total_billed_paise))
 
         out.append(
             PurchaseOrderOut(
@@ -136,7 +139,10 @@ def list_purchase_orders(db: Session = Depends(get_db)):
                 valid_until=po.valid_until.isoformat(),
                 status=po.status,
                 po_number_norm=po.po_number_norm,
-                total_amount=format_rupees(from_paise(total_ordered_paise)),
+                net_value=net_val_str,
+                billed_net_value=billed_net_val_str,
+                billed_pct=pct,
+                total_amount=net_val_str,
                 lines=po_lines_out,
                 billing_state=billing_state,
                 billed_percentage=pct,
@@ -180,6 +186,7 @@ def get_purchase_order(po_number: str, db: Session = Depends(get_db)):
                 quantity=format_qty(ordered_qty),
                 unit_price=format_rupees(unit_price_dec),
                 tax_rate=format_rate(line.tax_rate),
+                tax_rate_percent=format_rate(line.tax_rate),
                 billed_quantity=format_qty(billed_qty),
                 remaining_quantity=format_qty(rem_qty),
             )
@@ -195,6 +202,8 @@ def get_purchase_order(po_number: str, db: Session = Depends(get_db)):
         billing_state = "OVERBILLED"
 
     pct = round((total_billed_paise / total_ordered_paise) * 100, 1) if total_ordered_paise > 0 else 0.0
+    net_val_str = format_rupees(from_paise(total_ordered_paise))
+    billed_net_val_str = format_rupees(from_paise(total_billed_paise))
 
     # Invoices in ledger for this PO
     invoices_stmt = (
@@ -227,7 +236,10 @@ def get_purchase_order(po_number: str, db: Session = Depends(get_db)):
         valid_until=po.valid_until.isoformat(),
         status=po.status,
         po_number_norm=po.po_number_norm,
-        total_amount=format_rupees(from_paise(total_ordered_paise)),
+        net_value=net_val_str,
+        billed_net_value=billed_net_val_str,
+        billed_pct=pct,
+        total_amount=net_val_str,
         lines=po_lines_out,
         billing_state=billing_state,
         billed_percentage=pct,

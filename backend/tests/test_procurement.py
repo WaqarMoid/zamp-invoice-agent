@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -7,33 +8,37 @@ from app.db import Base, get_db
 from app.main import app
 from app.seed import seed
 
-# Use in-memory SQLite with StaticPool so all connections share the DB
-TEST_DB_URL = "sqlite:///:memory:"
-engine = create_engine(
-    TEST_DB_URL,
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base.metadata.create_all(bind=engine)
-with TestingSessionLocal() as session:
-    seed(session, force=True)
+@pytest.fixture(autouse=True)
+def setup_procurement_db():
+    engine = create_engine(
+        "sqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    Base.metadata.create_all(bind=engine)
+    with TestingSessionLocal() as session:
+        seed(session, force=True)
+
+    def override_get_db():
+        db = TestingSessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_db] = override_get_db
+    yield
+    app.dependency_overrides.pop(get_db, None)
 
 
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+@pytest.fixture
+def client():
+    return TestClient(app)
 
 
-app.dependency_overrides[get_db] = override_get_db
-client = TestClient(app)
-
-
-def test_vendors_endpoint():
+def test_vendors_endpoint(client):
     res = client.get("/api/vendors")
     assert res.status_code == 200
     vendors = res.json()
@@ -51,7 +56,7 @@ def test_vendors_endpoint():
     assert v006["deactivated_on"] == "2026-09-30"
 
 
-def test_purchase_orders_consumption_matches_doc_05():
+def test_purchase_orders_consumption_matches_doc_05(client):
     res = client.get("/api/purchase-orders")
     assert res.status_code == 200
     pos = {p["po_number"]: p for p in res.json()}
@@ -87,7 +92,7 @@ def test_purchase_orders_consumption_matches_doc_05():
     assert p418["lines"][0]["remaining_quantity"] == "10"
 
 
-def test_single_po_detail_with_invoices():
+def test_single_po_detail_with_invoices(client):
     res = client.get("/api/purchase-orders/PO-2026-0418")
     assert res.status_code == 200
     data = res.json()

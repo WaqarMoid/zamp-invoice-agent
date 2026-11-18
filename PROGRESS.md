@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P5 API & streaming
-- **Next action:** Implement endpoints in `app/api/runs.py`, `app/api/stats.py`, `app/api/admin.py`, SSE streaming per doc 08, and `test_api.py`.
+- **Current phase:** P6a Tokens, fonts, shell, components
+- **Next action:** Implement frontend shared component library, AppShell, navigation, typography, design tokens, and `/__gallery` page per docs/09.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -14,7 +14,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P2 Fixtures
 - [x] P3 Extraction
 - [x] P4 Pipeline & rules
-- [ ] P5 API & streaming
+- [x] P5 API & streaming
 - [ ] P6a Tokens, fonts, shell, components
 - [ ] P6b Dashboard
 - [ ] P6c Process invoice
@@ -112,25 +112,38 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - Commit: 5f937be
 - Notes for next phase: Proceed with Phase 5 API & streaming.
 
-### P5 API & streaming — in progress
-- Plan:
-  - Implement `/api/samples` and `/api/samples/{id}/file`.
-  - Implement `/api/runs` (POST multipart and JSON sample, GET list with filters/search, GET run detail, GET document, GET pages/{n}.png).
-  - Implement `/api/runs/{id}/events` SSE streaming endpoint using `EventSourceResponse` with replay and broker subscription.
-  - Implement `/api/runs/{id}/review` human review endpoint.
-  - Implement `/api/stats` and `/api/admin/reset` (gated by DEMO_MODE).
-  - Verify all curl checks from doc 08 §8.5 and write `test_api.py`.
+### P5 API & streaming — done
+- Built:
+  - Samples endpoints: `backend/app/api/samples.py` (`GET /api/samples`, `GET /api/samples/{id}/file`).
+  - Admin endpoints: `backend/app/api/admin.py` (`POST /api/admin/reset` gated by `DEMO_MODE=true` with foreign key safe deletion sequence).
+  - Stats endpoints: `backend/app/api/stats.py` (`GET /api/stats` computing total runs, completed, by_decision, auto_approval_rate, awaiting_action, value_processed in rupees, median duration ms, and 7-day sparkline).
+  - Runs endpoints: `backend/app/api/runs.py` (`POST /api/runs` multipart & JSON with mime/magic validation, `GET /api/runs` with filters/search/pagination, `GET /api/runs/{id}`, `GET /api/runs/{id}/events` SSE streaming with `EventSourceResponse`, replay history & live broker subscription, `GET /api/runs/{id}/document`, `GET /api/runs/{id}/pages/{n}.png` rendered via PyMuPDF with LRU memory cache, and `POST /api/runs/{id}/review`).
+  - Procurement API alignment: `backend/app/api/procurement.py` and `schemas.py` updated to include exact fields from doc 08 (`net_value`, `billed_net_value`, `billed_pct`, `tax_rate_percent`).
+  - Automated verification script: `backend/scripts/verify_phase5.py`.
+  - Comprehensive API test suite: `backend/tests/test_api.py`.
+- Verified:
+  - All 6 acceptance steps from doc 08 §8.5 passed via `backend/scripts/verify_phase5.py`:
+    1. `POST /api/admin/reset {"confirm":"RESET"}` -> `200 {"ok":true}`
+    2. `POST /api/runs {"sample_id":"F01"}` -> 36 SSE events streamed, `run.completed` with `APPROVE`, `label`: "Approved", `headline`: "Approved for payment. Matches PO-2026-0412 within tolerance. PO-2026-0412 is now fully billed."
+    3. F02 -> `REVIEW` (36 events), F05 -> `HOLD` (36 events), F04 -> `REJECT` (36 events).
+    4. Re-run F01 -> `REJECT` ("Rejected: Duplicate of SPS/26-27/0512 (approved, dated 2026-11-12, ₹129682.00).")
+    5. `GET /api/purchase-orders/PO-2026-0412` -> `billed_pct: 100.0`, `billing_state: FULLY_BILLED`.
+    6. Reconnect test: start F03, connect after 2s with `Last-Event-ID: 3` -> events 4..36 received contiguously without gaps (`All event IDs contiguous: True`).
+  - Full backend pytest suite: 69/69 passed in 6.77s (`pytest backend/tests`).
+  - Ruff formatting & linting: clean (0 errors, `ruff check backend`).
+- Commit: _pending_
+- Notes for next phase: Proceed with Phase 6 Frontend UI (sub-phases 6a through 6g per doc 09).
 
 ## Handoff notes (for a fresh session with empty context)
-- P0, P1, P2, P3, and P4 are complete and all tests pass (64/64 pytest).
-- Entire deterministic rules engine (C01..C21), PO matching & inference, stage pipeline, runner, and ledger writing are tested and working.
-- Golden evaluation results written to `backend/reports/golden_results.md`.
-- Next step: Phase 5 API & streaming per `docs/08_API_CONTRACT.md`.
+- P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
+- API backend is fully operational: sample catalog, run execution, live SSE streaming with disconnect replay, document page rasterization, decision synthesis, human review override, ledger recording, and procurement analytics.
+- Next step: Phase 6a (Design tokens, fonts, layout shell, shared component library, and `/__gallery` page).
 
 ## Deviations log
-- **Model selection**: Switched default LLM from `gemini-2.5-flash` to `gemini-3.5-flash-lite`. Gemini Developer API Free Tier capped `gemini-2.5-flash` at 20 requests per day (`RESOURCE_EXHAUSTED`). `gemini-3.5-flash-lite` has higher free-tier limits, fast response times (2-4s), and achieved 100% extraction accuracy on both text and vision/scanned invoices.
+- **Model selection**: Switched default LLM from `gemini-2.5-flash` to `gemini-3.5-flash-lite`. Gemini Developer API Free Tier capped `gemini-2.5-flash` at 20 requests per day (`RESOURCE_EXHAUSTED`). `gemini-3.5-flash-lite` provides high free-tier limits, fast response times (2-4s), and achieved 100% extraction accuracy on both text and vision/scanned invoices.
 - **Gemini response schema**: Pydantic's `dict[str, float]` causes `additionalProperties` error on Google AI Studio API. Replaced with `MirrorFieldConfidence` explicit float fields.
 - **Duplicate query SQL NULL safety**: In SQL, `run_id != current_run_id` evaluates to NULL/false when `run_id` is NULL (such as seed ledger rows). Updated `check_c09` filter to `or_(InvoiceLedger.run_id.is_(None), InvoiceLedger.run_id != current_run_id)` so prior seed invoices are correctly checked.
+- **Seed wipe order**: Corrected deletion sequence in `seed(db, force=True)` to delete `LedgerLine` and `InvoiceLedger` before `Run` to satisfy SQLite foreign key constraints.
 
 ## Waiting on Waqar (HUMAN steps)
 <!-- None at this time. All API keys and environment configurations are in place. -->

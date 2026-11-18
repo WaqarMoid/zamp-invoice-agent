@@ -4,10 +4,15 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.admin import router as admin_router
 from app.api.health import router as health_router
 from app.api.procurement import router as procurement_router
+from app.api.runs import router as runs_router
+from app.api.samples import router as samples_router
+from app.api.stats import router as stats_router
 from app.config import get_settings
 from app.db import Base, SessionLocal, engine
+from app.models import Run
 from app.seed import seed
 
 settings = get_settings()
@@ -27,6 +32,12 @@ async def lifespan(app: FastAPI):
     # Seed data if unseeded
     with SessionLocal() as session:
         seed(session, force=False)
+        # On server startup, any run left in RUNNING/QUEUED (crash/restart) is marked FAILED per doc 07 §7.7
+        interrupted = session.query(Run).filter(Run.status.in_(["RUNNING", "QUEUED"])).all()
+        for r in interrupted:
+            r.status = "FAILED"
+            r.headline = "Interrupted by server restart"
+        session.commit()
     yield
     logger.info("Shutting down Kestrel AP · Invoice desk API backend...")
 
@@ -49,6 +60,10 @@ app.add_middleware(
 # Include routers
 app.include_router(health_router)
 app.include_router(procurement_router)
+app.include_router(samples_router)
+app.include_router(runs_router)
+app.include_router(stats_router)
+app.include_router(admin_router)
 
 
 @app.get("/")

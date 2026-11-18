@@ -651,8 +651,7 @@ def check_c10(
             outcome=outcome,
             severity=severity,
             message=(
-                f"No PO number on invoice. Inferred {po.po_number} "
-                f"(match {score:.0%}{date_clause}).{suffix}"
+                f"No PO number on invoice. Inferred {po.po_number} (match {score:.0%}{date_clause}).{suffix}"
             ),
             evidence={"method": "inferred", "inferred_po": po.po_number, "candidates": clean_cands},
         )

@@ -34,12 +34,12 @@ def seed(session: Session, force: bool = False) -> None:
     """
     if force:
         logger.info("Force seed requested: wiping data in dependency order...")
+        session.execute(delete(LedgerLine))
+        session.execute(delete(InvoiceLedger))
         session.execute(delete(RunEvent))
         session.execute(delete(RunCheck))
         session.execute(delete(RunStage))
         session.execute(delete(Run))
-        session.execute(delete(LedgerLine))
-        session.execute(delete(InvoiceLedger))
         session.execute(delete(Document))
         session.execute(delete(POLine))
         session.execute(delete(PurchaseOrder))

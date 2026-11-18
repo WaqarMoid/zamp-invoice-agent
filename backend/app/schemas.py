@@ -184,6 +184,7 @@ class POLineOut(BaseModel):
     quantity: str  # decimal formatted, trailing zeros stripped
     unit_price: str  # decimal formatted with 2 dp
     tax_rate: str  # e.g. "18"
+    tax_rate_percent: str = ""  # e.g. "18"
     billed_quantity: str  # sum of approved ledger lines
     remaining_quantity: str  # quantity - billed_quantity
 
@@ -197,11 +198,14 @@ class PurchaseOrderOut(BaseModel):
     po_date: str  # YYYY-MM-DD
     valid_until: str  # YYYY-MM-DD
     status: str  # OPEN | CLOSED | CANCELLED
-    po_number_norm: str
-    total_amount: str  # calculated from lines
+    po_number_norm: str | None = None
+    net_value: str = ""
+    billed_net_value: str = ""
+    billed_pct: float = 0.0
+    total_amount: str = ""  # alias for net_value
     lines: list[POLineOut]
     billing_state: str  # UNBILLED | PARTIALLY_BILLED | FULLY_BILLED | OVERBILLED
-    billed_percentage: float
+    billed_percentage: float = 0.0  # alias for billed_pct
 
 
 class LedgerEntryOut(BaseModel):
