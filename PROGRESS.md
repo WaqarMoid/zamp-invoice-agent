@@ -145,7 +145,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - Verified:
   - `npm --prefix frontend run build` (`tsc -b && vite build` built cleanly in 3.54s).
   - All self-hosted font bundles generated and verified.
-- Commit: _pending_
+- Commit: 5bf05bb
 - Notes for next phase: Proceed with Phase 6b Dashboard (`/`).
 
 ## Handoff notes (for a fresh session with empty context)
