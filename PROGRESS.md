@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6d Run detail live view
-- **Next action:** Implement `/runs/:id` with real-time SSE streaming, 300ms pacing, stage markers & cards, decision panel, human review modal, email draft modal, and document drawer.
+- **Current phase:** P6e Purchase orders
+- **Next action:** Implement `/purchase-orders` with cumulative consumption bars, line breakdown, invoice history against PO, and vendors master card.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -18,7 +18,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P6a Tokens, fonts, shell, components
 - [x] P6b Dashboard
 - [x] P6c Process invoice
-- [ ] P6d Run detail live view
+- [x] P6d Run detail live view
 - [ ] P6e Purchase orders
 - [ ] P6f Rules
 - [ ] P6g Responsive, a11y, polish
@@ -171,6 +171,21 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - `npm --prefix frontend run build` clean build in 3.09s.
 - Commit: 7d6f1f8
 - Notes for next phase: Proceed with Phase 6d Run detail live view (`/runs/:id`).
+
+### P6d Run detail live view — done
+- Built:
+  - Run detail page: `frontend/src/pages/RunDetail.tsx` at `/runs/:id`.
+  - SSE real-time stream consumer hook: `frontend/src/lib/useRunStream.ts` with honest 300 ms minimum stage pacing, live millisecond elapsed timer, event log capture, and auto-fallback polling on disconnect.
+  - Decision panel: 4 px semantic left rule, display decision heading, headline, ordered action items, key financial facts, AP review approval/rejection modal with 5-character audit note validation and mandatory phone verification confirmation for HOLD invoices.
+  - Vendor email draft modal with one-click copy and fraud callout guard.
+  - Pipeline 8-stage stepper card with vertical progress connector lines and real duration badges.
+  - Detail tabs: Stage checks & evidence disclosure, Extracted fields & line items table, and auto-scrolling execution event log.
+  - Diagnostic StageOutputView for all 8 stages (diagnostics, parameters, normalizations, bank comparison, duplicate hits, candidate PO scoring, line consumption, and decision synthesis).
+  - 560 px document drawer with rendered PNG page rasterization and original file download link.
+- Verified:
+  - `npm --prefix frontend run build` clean build in 3.23s.
+- Commit: 05c965f
+- Notes for next phase: Proceed with Phase 6e Purchase orders (`/purchase-orders`).
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).
