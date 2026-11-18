@@ -131,7 +131,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
     6. Reconnect test: start F03, connect after 2s with `Last-Event-ID: 3` -> events 4..36 received contiguously without gaps (`All event IDs contiguous: True`).
   - Full backend pytest suite: 69/69 passed in 6.77s (`pytest backend/tests`).
   - Ruff formatting & linting: clean (0 errors, `ruff check backend`).
-- Commit: _pending_
+- Commit: 3c5ab95
 - Notes for next phase: Proceed with Phase 6 Frontend UI (sub-phases 6a through 6g per doc 09).
 
 ## Handoff notes (for a fresh session with empty context)
