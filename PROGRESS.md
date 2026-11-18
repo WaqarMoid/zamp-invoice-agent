@@ -3,8 +3,8 @@
 The coding agent keeps this file current. It is the agent's memory across sessions and context resets. Update it **before** and **after** every phase, and whenever you stop.
 
 ## Current state
-- **Current phase:** P6a Tokens, fonts, shell, components
-- **Next action:** Implement frontend shared component library, AppShell, navigation, typography, design tokens, and `/__gallery` page per docs/09.
+- **Current phase:** P6b Dashboard
+- **Next action:** Implement Dashboard page at `/` with KPI strip, status filters, search, runs table, live polling, and process invoice CTA.
 - **Live URLs:** frontend: _tbd_ · backend: _tbd_
 - **LLM model in use:** gemini-3.5-flash-lite
 
@@ -15,7 +15,7 @@ The coding agent keeps this file current. It is the agent's memory across sessio
 - [x] P3 Extraction
 - [x] P4 Pipeline & rules
 - [x] P5 API & streaming
-- [ ] P6a Tokens, fonts, shell, components
+- [x] P6a Tokens, fonts, shell, components
 - [ ] P6b Dashboard
 - [ ] P6c Process invoice
 - [ ] P6d Run detail live view
@@ -133,6 +133,20 @@ The coding agent keeps this file current. It is the agent's memory across sessio
   - Ruff formatting & linting: clean (0 errors, `ruff check backend`).
 - Commit: 3c5ab95
 - Notes for next phase: Proceed with Phase 6 Frontend UI (sub-phases 6a through 6g per doc 09).
+
+### P6a Tokens, fonts, shell, components — done
+- Built:
+  - Design tokens: `frontend/src/styles/tokens.css` with exact neutrals, semantic tints, and shadows per doc 09 §9.4. Zero gradients, zero neon, zero unassigned hex values.
+  - Typography: `frontend/src/styles/globals.css` with self-hosted Raleway, Source Sans 3, and IBM Plex Mono fonts. Added `font-feature-settings: "lnum" 1, "tnum" 1;` for lining figures.
+  - TypeScript types: `frontend/src/lib/types.ts` copied verbatim from doc 08 §8.4.
+  - API client & formatting: `frontend/src/lib/api.ts` and `frontend/src/lib/format.ts` (INR currency, compact money, relative dates, durations).
+  - Shared atomic component library: `frontend/src/components/` (`Button`, `DecisionBadge`, `OutcomeIcon`, `StageMarker`, `KeyValue`, `Money`, `DataTable`, `ConsumptionBar`, `Tabs`, `Disclosure`, `Dialog`, `Toast`, `Skeleton`, `EmptyState`, `Dropzone`, `PageHeader`, `AppShell`).
+  - Component gallery: `frontend/src/pages/Gallery.tsx` (`/__gallery`) showcasing all typography tokens, buttons, badges, markers, tables, and dialogs.
+- Verified:
+  - `npm --prefix frontend run build` (`tsc -b && vite build` built cleanly in 3.54s).
+  - All self-hosted font bundles generated and verified.
+- Commit: _pending_
+- Notes for next phase: Proceed with Phase 6b Dashboard (`/`).
 
 ## Handoff notes (for a fresh session with empty context)
 - P0 through P5 are complete and 100% verified (69/69 pytest tests passing).

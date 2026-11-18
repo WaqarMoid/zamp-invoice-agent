@@ -1,5 +1,85 @@
 :root {
+  /* Fonts */
   --font-sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Raleway", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: "Raleway", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Neutrals */
+  --paper: #F6F5F1;
+  --surface: #FFFFFF;
+  --surface-sunken: #FAF9F6;
+  --ink: #111111;
+  --ink-2: #3D3D3A;
+  --ink-3: #6E6D68;
+  --line: #E5E3DC;
+  --line-strong: #CCC9BF;
+  --focus: #111111;
+
+  /* Semantic - Approve */
+  --approve: #1B6B43;
+  --approve-tint: #EAF4EE;
+  --approve-line: #B9DCC8;
+
+  /* Semantic - Review */
+  --review: #8A5A00;
+  --review-tint: #FBF3E1;
+  --review-line: #EAD2A0;
+
+  /* Semantic - Hold */
+  --hold: #A13D0F;
+  --hold-tint: #FCEEE6;
+  --hold-line: #F0C3A8;
+
+  /* Semantic - Reject */
+  --reject: #A3182A;
+  --reject-tint: #FBEBED;
+  --reject-line: #EFBCC3;
+
+  /* Semantic - Info & Running */
+  --info: #3D3D3A;
+  --info-tint: #F1F0EC;
+  --running: #111111;
+
+  /* Shadows */
+  --shadow-1: 0 1px 2px rgba(17, 17, 17, 0.04);
+  --shadow-2: 0 1px 2px rgba(17, 17, 17, 0.05), 0 12px 32px -16px rgba(17, 17, 17, 0.18);
+}
+
+@theme {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-focus: var(--focus);
+
+  --color-approve: var(--approve);
+  --color-approve-tint: var(--approve-tint);
+  --color-approve-line: var(--approve-line);
+
+  --color-review: var(--review);
+  --color-review-tint: var(--review-tint);
+  --color-review-line: var(--review-line);
+
+  --color-hold: var(--hold);
+  --color-hold-tint: var(--hold-tint);
+  --color-hold-line: var(--hold-line);
+
+  --color-reject: var(--reject);
+  --color-reject-tint: var(--reject-tint);
+  --color-reject-line: var(--reject-line);
+
+  --color-info: var(--info);
+  --color-info-tint: var(--info-tint);
+  --color-running: var(--running);
+
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
 }
